@@ -1,0 +1,158 @@
+/* ==========================================================================
+   HireFlow Global Stylesheet - App Modular Version
+   ========================================================================== */
+
+/* 1. Import Premium Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* 2. Design System Variables */
+:root {
+    /* Brand Colors */
+    --hf-primary: #4f46e5;
+    --hf-primary-hover: #4338ca;
+    --hf-primary-rgb: 79, 70, 229;
+    --hf-secondary: #8b5cf6;
+    --hf-secondary-hover: #7c3aed;
+    --hf-secondary-rgb: 139, 92, 246;
+    
+    /* Semantic Colors */
+    --hf-success: #10b981;
+    --hf-success-rgb: 16, 185, 129;
+    --hf-danger: #f43f5e;
+    --hf-danger-rgb: 244, 63, 94;
+    --hf-warning: #f59e0b;
+    --hf-warning-rgb: 245, 158, 11;
+    --hf-info: #06b6d4;
+    --hf-info-rgb: 6, 182, 212;
+    
+    /* Neutrals */
+    --hf-dark: #0f172a;        /* Slate 900 */
+    --hf-dark-rgb: 15, 23, 42;
+    --hf-light: #f8fafc;       /* Slate 50 */
+    --hf-light-rgb: 248, 250, 252;
+    --hf-white: #ffffff;
+    --hf-border-color: #e2e8f0; /* Slate 200 */
+    
+    /* Typography Neutral Shades */
+    --hf-text-main: #334155;    /* Slate 700 */
+    --hf-text-muted: #64748b;   /* Slate 500 */
+    
+    /* Shadows */
+    --hf-shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+    --hf-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1), 0 2px 4px -2px rgba(15, 23, 42, 0.1);
+    --hf-shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -4px rgba(15, 23, 42, 0.1);
+    
+    /* Transitions */
+    --hf-transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --hf-transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 3. Base Styles & Overrides */
+body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--hf-text-main);
+    background-color: var(--hf-light);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--hf-dark);
+    font-weight: 700;
+}
+
+a {
+    color: var(--hf-primary);
+    text-decoration: none;
+    transition: var(--hf-transition-fast);
+}
+
+a:hover {
+    color: var(--hf-primary-hover);
+}
+
+/* 4. Custom Reusable Components & Extensions */
+
+/* Custom Primary Button */
+.btn-primary-custom {
+    background-color: var(--hf-primary);
+    color: var(--hf-white);
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border: 1px solid var(--hf-primary);
+    border-radius: 0.5rem;
+    box-shadow: var(--hf-shadow-sm);
+    transition: var(--hf-transition-base);
+}
+
+.btn-primary-custom:hover, 
+.btn-primary-custom:focus {
+    background-color: var(--hf-primary-hover);
+    border-color: var(--hf-primary-hover);
+    color: var(--hf-white);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+    transform: translateY(-1px);
+}
+
+.btn-primary-custom:active {
+    transform: translateY(0);
+}
+
+/* Custom Secondary Button */
+.btn-secondary-custom {
+    background-color: transparent;
+    color: var(--hf-text-main);
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border: 1px solid var(--hf-border-color);
+    border-radius: 0.5rem;
+    background-color: var(--hf-white);
+    box-shadow: var(--hf-shadow-sm);
+    transition: var(--hf-transition-base);
+}
+
+.btn-secondary-custom:hover {
+    color: var(--hf-dark);
+    background-color: var(--hf-light);
+    border-color: #cbd5e1; /* Slate 300 */
+    transform: translateY(-1px);
+}
+
+/* Text Gradient Effect */
+.text-gradient {
+    background: linear-gradient(135deg, var(--hf-primary), var(--hf-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Interactive Card Hover Effect */
+.card-hover {
+    transition: var(--hf-transition-base);
+    border: 1px solid var(--hf-border-color) !important;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--hf-shadow-lg) !important;
+    border-color: rgba(79, 70, 229, 0.2) !important;
+}
+
+/* Glassmorphism Styling Helper */
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Custom Spacing Helpers */
+.section-padding {
+    padding: 5rem 0;
+}
+
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 3rem 0;
+    }
+}

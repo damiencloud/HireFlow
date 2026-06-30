@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse open job openings across engineering, design, and management sectors. Filter by location, job type, and experience level.">
+    <title>Find Jobs - HireFlow Career Listings</title>
+
+    <!-- 1. Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- 2. Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- 3. HireFlow Global CSS (Modular Path with Cache-Buster) -->
+    <link class="hf-stylesheet" rel="stylesheet" href="/home/static/home/css/global.css?v=2">
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Reusable Navbar Component -->
+    <div data-component="navbar"></div>
+
+    <!-- Page Header Banner containing Search Bar -->
+    <header class="py-5 bg-white border-bottom" style="border-color: var(--hf-border-color) !important;">
+        <div class="container">
+            <div class="row align-items-center justify-content-between mb-4">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <h1 class="fw-800 text-dark mb-1">Find Your Next Role</h1>
+                    <p class="text-muted mb-0">Browse through hundreds of curated technology job openings.</p>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-semibold" style="color: var(--hf-primary) !important;">
+                        📂 12,540 Live Openings
+                    </span>
+                </div>
+            </div>
+            
+            <!-- Reusable Search Bar Component Slot -->
+            <div class="row">
+                <div class="col-12 position-relative z-3">
+                    <div data-component="search-bar"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Board Grid Container -->
+    <main class="flex-grow-1 container py-5">
+        <div class="row g-4">
+            
+            <!-- A. Left Filter Sidebar Column -->
+            <aside class="col-lg-3 col-12">
+                <!-- Mobile Accordion Toggler for Filters -->
+                <div class="d-lg-none mb-3">
+                    <button class="btn btn-secondary-custom w-100 d-flex justify-content-between align-items-center fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#filtersCollapse" aria-expanded="false" aria-controls="filtersCollapse">
+                        <span><i class="bi bi-funnel-fill me-2 text-primary" style="color: var(--hf-primary) !important;"></i> Filter Options</span>
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                </div>
+
+                <!-- Collapsible filter content drawer -->
+                <div class="collapse d-lg-block" id="filtersCollapse">
+                    <form action="#" method="GET" class="d-flex flex-column gap-4" onsubmit="event.preventDefault();">
+                        
+                        <!-- Filter Group 1: Job Type -->
+                        <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 0.95rem;">Job Type</h6>
+                            <div class="d-flex flex-column gap-2.5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="job_type" value="full-time" id="typeFT" checked>
+                                    <label class="form-check-label text-muted small fw-semibold" for="typeFT">Full-Time (8,430)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="job_type" value="part-time" id="typePT">
+                                    <label class="form-check-label text-muted small fw-semibold" for="typePT">Part-Time (1,240)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="job_type" value="remote" id="typeRM" checked>
+                                    <label class="form-check-label text-muted small fw-semibold" for="typeRM">Remote Only (3,520)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="job_type" value="contract" id="typeCT">
+                                    <label class="form-check-label text-muted small fw-semibold" for="typeCT">Contract (890)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filter Group 2: Experience Level -->
+                        <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 0.95rem;">Experience Level</h6>
+                            <div class="d-flex flex-column gap-2.5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="experience" value="entry" id="expEntry">
+                                    <label class="form-check-label text-muted small fw-semibold" for="expEntry">Entry Level</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="experience" value="mid" id="expMid" checked>
+                                    <label class="form-check-label text-muted small fw-semibold" for="expMid">Mid Level</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="experience" value="senior" id="expSenior" checked>
+                                    <label class="form-check-label text-muted small fw-semibold" for="expSenior">Senior Level</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="experience" value="executive" id="expExec">
+                                    <label class="form-check-label text-muted small fw-semibold" for="expExec">Executive / Director</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filter Group 3: Salary Range -->
+                        <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 0.95rem;">Salary (Annual)</h6>
+                            <div class="d-flex flex-column gap-2.5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="salary" id="salAny" checked>
+                                    <label class="form-check-label text-muted small fw-semibold" for="salAny">Any Salary</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="salary" id="sal50">
+                                    <label class="form-check-label text-muted small fw-semibold" for="sal50">$50,000 - $100,000</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="salary" id="sal100">
+                                    <label class="form-check-label text-muted small fw-semibold" for="sal100">$100,000 - $150,000</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="salary" id="sal150">
+                                    <label class="form-check-label text-muted small fw-semibold" for="sal150">$150,000+</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reset Buttons -->
+                        <button type="submit" class="btn btn-primary-custom w-100 fw-bold border-0">Apply Filters</button>
+                        <button type="reset" class="btn btn-secondary-custom w-100 fw-bold border" style="border-color: var(--hf-border-color) !important;">Clear Filters</button>
+
+                    </form>
+                </div>
+            </aside>
+
+            <!-- B. Right Main Listing Results Column -->
+            <section class="col-lg-9 col-12">
+                <!-- Sorting & Tally header row -->
+                <div class="d-flex align-items-center justify-content-between mb-4 bg-white p-3 rounded-4 shadow-sm border border-light">
+                    <span class="text-muted fw-semibold" style="font-size: 0.95rem;">
+                        Showing <strong class="text-dark">4</strong> active job results
+                    </span>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted small fw-bold d-none d-sm-inline-block text-nowrap">Sort by:</span>
+                        <select class="form-select form-select-sm border-0 bg-light fw-semibold" style="box-shadow: none; cursor: pointer; width: auto; font-size: 0.85rem;">
+                            <option value="newest">Newest Posted</option>
+                            <option value="highest">Highest Salary</option>
+                            <option value="popular">Popular Roles</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Vertical Cards Listing Stack -->
+                <div class="d-flex flex-column gap-4">
+                    <!-- Job Listing 1: Google (Nested Component or Custom Rendered copy) -->
+                    <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-primary" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(79, 70, 229, 0.06) !important; color: #4285f4 !important;">
+                                        G
+                                    </div>
+                                    <div>
+                                        <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">Google LLC</span>
+                                        <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Senior Software Engineer</h5>
+                                    </div>
+                                </div>
+                                <button class="btn p-2 border-0 bg-light rounded-circle text-muted hover-primary d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; transition: var(--hf-transition-fast);" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Job">
+                                    <i class="bi bi-bookmark-fill text-primary" style="font-size: 0.95rem; color: var(--hf-primary) !important;"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
+                                    <i class="bi bi-briefcase me-1"></i> Full-Time
+                                </span>
+                                <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-geo-alt me-1"></i> Mountain View, CA
+                                </span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-currency-dollar me-1"></i> $160,000 - $210,000 /yr
+                                </span>
+                            </div>
+                            <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                                We are looking for a Senior Software Engineer to design, develop, and deploy scalable cloud infrastructure services...
+                            </p>
+                        </div>
+                        <div>
+                            <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Python</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Django</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Docker</span>
+                                </div>
+                                <a href="/jobs/templates/jobs/job-details.html" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
+                                    Apply Now <i class="bi bi-arrow-right-short ms-0.5"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Listing 2: Stripe -->
+                    <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-secondary" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(139, 92, 246, 0.06) !important; color: var(--hf-secondary) !important;">
+                                        S
+                                    </div>
+                                    <div>
+                                        <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">Stripe Inc.</span>
+                                        <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Product UX/UI Designer</h5>
+                                    </div>
+                                </div>
+                                <button class="btn p-2 border-0 bg-light rounded-circle text-muted hover-primary d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; transition: var(--hf-transition-fast);" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Job">
+                                    <i class="bi bi-bookmark" style="font-size: 0.95rem;"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
+                                    <i class="bi bi-briefcase me-1"></i> Full-Time
+                                </span>
+                                <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-geo-alt me-1"></i> Remote (US)
+                                </span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-currency-dollar me-1"></i> $110,000 - $145,000 /yr
+                                </span>
+                            </div>
+                            <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                                We are seeking a Product Designer to own Stripe's dashboard billing interface designs and customer flow workflows...
+                            </p>
+                        </div>
+                        <div>
+                            <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Figma</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">UI Design</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">React</span>
+                                </div>
+                                <a href="/jobs/templates/jobs/job-details.html" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
+                                    Apply Now <i class="bi bi-arrow-right-short ms-0.5"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Listing 3: Figma -->
+                    <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-danger" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(242, 78, 30, 0.06) !important; color: #f24e1e !important;">
+                                        F
+                                    </div>
+                                    <div>
+                                        <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">Figma Inc.</span>
+                                        <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Staff DevOps Engineer</h5>
+                                    </div>
+                                </div>
+                                <button class="btn p-2 border-0 bg-light rounded-circle text-muted hover-primary d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; transition: var(--hf-transition-fast);" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Job">
+                                    <i class="bi bi-bookmark" style="font-size: 0.95rem;"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
+                                    <i class="bi bi-briefcase me-1"></i> Full-Time
+                                </span>
+                                <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-geo-alt me-1"></i> San Francisco, CA
+                                </span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-currency-dollar me-1"></i> $180,000 - $230,000 /yr
+                                </span>
+                            </div>
+                            <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                                Maintain and scale Figma's core visual canvas rendering pipeline cluster infrastructure on AWS and Kubernetes...
+                            </p>
+                        </div>
+                        <div>
+                            <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Kubernetes</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">AWS</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Go</span>
+                                </div>
+                                <a href="/jobs/templates/jobs/job-details.html" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
+                                    Apply Now <i class="bi bi-arrow-right-short ms-0.5"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Listing 4: Microsoft -->
+                    <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-info" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(0, 164, 239, 0.06) !important; color: #00a4ef !important;">
+                                        M
+                                    </div>
+                                    <div>
+                                        <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">Microsoft Corp.</span>
+                                        <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Data & AI Analyst</h5>
+                                    </div>
+                                </div>
+                                <button class="btn p-2 border-0 bg-light rounded-circle text-muted hover-primary d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; transition: var(--hf-transition-fast);" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Job">
+                                    <i class="bi bi-bookmark" style="font-size: 0.95rem;"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
+                                    <i class="bi bi-briefcase me-1"></i> Full-Time
+                                </span>
+                                <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-geo-alt me-1"></i> Redmond, WA
+                                </span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                    <i class="bi bi-currency-dollar me-1"></i> $125,000 - $160,000 /yr
+                                </span>
+                            </div>
+                            <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                                Analyze consumer search metrics across the Copilot division using statistical modeling algorithms...
+                            </p>
+                        </div>
+                        <div>
+                            <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">SQL</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Python</span>
+                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">PowerBI</span>
+                                </div>
+                                <a href="/jobs/templates/jobs/job-details.html" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
+                                    Apply Now <i class="bi bi-arrow-right-short ms-0.5"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reusable Pagination component placeholder -->
+                <div data-component="pagination" class="mt-5"></div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Reusable Footer Component -->
+    <div data-component="footer"></div>
+
+    <!-- 4. Bootstrap Bundle with Popper JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- 5. HireFlow JavaScript Utilities (Modular Paths with Cache-Buster) -->
+    <script src="/home/static/home/js/component-loader.js?v=2"></script>
+    <script src="/home/static/home/js/global.js?v=2"></script>
+</body>
+</html>

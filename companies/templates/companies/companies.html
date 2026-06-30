@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse top technology companies and startups hiring developers and designers. Read employee review ratings and explore open positions.">
+    <title>Browse Companies - HireFlow Employer Directory</title>
+
+    <!-- 1. Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!-- 2. Bootstrap Icons CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- 3. HireFlow Global CSS -->
+    <link rel="stylesheet" href="/home/static/home/css/global.css?v=2">
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- Reusable Navbar Component -->
+    <div data-component="navbar"></div>
+
+    <!-- Page Header Banner -->
+    <header class="py-5 bg-white border-bottom" style="border-color: var(--hf-border-color) !important;">
+        <div class="container">
+            <div class="row align-items-center justify-content-between mb-4">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <h1 class="fw-800 text-dark mb-1">Top Tech Companies</h1>
+                    <p class="text-muted mb-0">Discover world-class teams and review active workspace openings.</p>
+                </div>
+                <div class="col-md-5">
+                    <!-- Inline Company Name Search form -->
+                    <form action="#" method="GET" class="d-flex gap-2" onsubmit="event.preventDefault();">
+                        <div class="input-group border rounded-3 shadow-sm bg-white" style="border-color: var(--hf-border-color) !important;">
+                            <span class="input-group-text bg-transparent border-0 text-muted">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" name="company_name" class="form-control border-0 ps-1" placeholder="Search company names..." style="font-size: 0.9rem; box-shadow: none;">
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom px-3 border-0">Find</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Grid Content Catalog -->
+    <main class="flex-grow-1 container py-5">
+        
+        <!-- Results Grid Layout (Responsive 3-Column setup) -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+            
+            <!-- Company 1: Stripe -->
+            <div class="col">
+                <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-secondary shadow-sm" style="width: 52px; height: 52px; font-size: 1.3rem; color: var(--hf-secondary) !important;">
+                                    S
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Stripe Inc.</h5>
+                                    <span class="text-muted" style="font-size: 0.8rem;">Fintech • stripe.com</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-1 bg-white px-2.5 py-1 rounded-pill shadow-sm" style="font-size: 0.8rem; font-weight: 600; color: #b45309; background-color: #fef3c7 !important;">
+                                <i class="bi bi-star-fill" style="font-size: 0.75rem;"></i> 4.8
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                            Stripe provides APIs and payment infrastructure that helps ecommerce businesses accept global payments...
+                        </p>
+                    </div>
+                    <div>
+                        <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                        <div class="d-flex align-items-center justify-content-between pt-1">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 shadow-sm" style="font-size: 0.75rem; color: var(--hf-primary) !important; font-weight: 600;">
+                                <i class="bi bi-briefcase-fill me-1"></i> 18 Open Jobs
+                            </span>
+                            <a href="#" class="fw-bold hover-underline text-secondary" style="font-size: 0.85rem; color: var(--hf-secondary) !important; transition: var(--hf-transition-fast);">
+                                View Profile <i class="bi bi-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company 2: Google -->
+            <div class="col">
+                <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-primary shadow-sm" style="width: 52px; height: 52px; font-size: 1.3rem; color: #4285f4 !important;">
+                                    G
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Google LLC</h5>
+                                    <span class="text-muted" style="font-size: 0.8rem;">Search/SaaS • google.com</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-1 bg-white px-2.5 py-1 rounded-pill shadow-sm" style="font-size: 0.8rem; font-weight: 600; color: #b45309; background-color: #fef3c7 !important;">
+                                <i class="bi bi-star-fill" style="font-size: 0.75rem;"></i> 4.9
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                            Google organizes the world's information and makes it universally accessible and useful...
+                        </p>
+                    </div>
+                    <div>
+                        <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                        <div class="d-flex align-items-center justify-content-between pt-1">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 shadow-sm" style="font-size: 0.75rem; color: var(--hf-primary) !important; font-weight: 600;">
+                                <i class="bi bi-briefcase-fill me-1"></i> 32 Open Jobs
+                            </span>
+                            <a href="#" class="fw-bold hover-underline text-secondary" style="font-size: 0.85rem; color: var(--hf-secondary) !important; transition: var(--hf-transition-fast);">
+                                View Profile <i class="bi bi-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company 3: Figma -->
+            <div class="col">
+                <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-danger shadow-sm" style="width: 52px; height: 52px; font-size: 1.3rem; color: #f24e1e !important;">
+                                    F
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Figma Inc.</h5>
+                                    <span class="text-muted" style="font-size: 0.8rem;">Design Tools • figma.com</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-1 bg-white px-2.5 py-1 rounded-pill shadow-sm" style="font-size: 0.8rem; font-weight: 600; color: #b45309; background-color: #fef3c7 !important;">
+                                <i class="bi bi-star-fill" style="font-size: 0.75rem;"></i> 4.7
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                            Figma is a collaborative web application for interface design with real-time editing features...
+                        </p>
+                    </div>
+                    <div>
+                        <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                        <div class="d-flex align-items-center justify-content-between pt-1">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 shadow-sm" style="font-size: 0.75rem; color: var(--hf-primary) !important; font-weight: 600;">
+                                <i class="bi bi-briefcase-fill me-1"></i> 14 Open Jobs
+                            </span>
+                            <a href="#" class="fw-bold hover-underline text-secondary" style="font-size: 0.85rem; color: var(--hf-secondary) !important; transition: var(--hf-transition-fast);">
+                                View Profile <i class="bi bi-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company 4: Microsoft -->
+            <div class="col">
+                <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-info shadow-sm" style="width: 52px; height: 52px; font-size: 1.3rem; color: #00a4ef !important;">
+                                    M
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Microsoft Corp.</h5>
+                                    <span class="text-muted" style="font-size: 0.8rem;">SaaS/Enterprise • microsoft.com</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-1 bg-white px-2.5 py-1 rounded-pill shadow-sm" style="font-size: 0.8rem; font-weight: 600; color: #b45309; background-color: #fef3c7 !important;">
+                                <i class="bi bi-star-fill" style="font-size: 0.75rem;"></i> 4.6
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                            Microsoft empowers every person and organization on the planet to achieve more with digital computing...
+                        </p>
+                    </div>
+                    <div>
+                        <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                        <div class="d-flex align-items-center justify-content-between pt-1">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 shadow-sm" style="font-size: 0.75rem; color: var(--hf-primary) !important; font-weight: 600;">
+                                <i class="bi bi-briefcase-fill me-1"></i> 26 Open Jobs
+                            </span>
+                            <a href="#" class="fw-bold hover-underline text-secondary" style="font-size: 0.85rem; color: var(--hf-secondary) !important; transition: var(--hf-transition-fast);">
+                                View Profile <i class="bi bi-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company 5: Netflix -->
+            <div class="col">
+                <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-danger shadow-sm" style="width: 52px; height: 52px; font-size: 1.3rem; color: #e50914 !important;">
+                                    N
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Netflix Inc.</h5>
+                                    <span class="text-muted" style="font-size: 0.8rem;">Entertainment • netflix.com</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-1 bg-white px-2.5 py-1 rounded-pill shadow-sm" style="font-size: 0.8rem; font-weight: 600; color: #b45309; background-color: #fef3c7 !important;">
+                                <i class="bi bi-star-fill" style="font-size: 0.75rem;"></i> 4.5
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                            Netflix is the world's leading streaming entertainment service with 230 million paid memberships...
+                        </p>
+                    </div>
+                    <div>
+                        <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                        <div class="d-flex align-items-center justify-content-between pt-1">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 shadow-sm" style="font-size: 0.75rem; color: var(--hf-primary) !important; font-weight: 600;">
+                                <i class="bi bi-briefcase-fill me-1"></i> 9 Open Jobs
+                            </span>
+                            <a href="#" class="fw-bold hover-underline text-secondary" style="font-size: 0.85rem; color: var(--hf-secondary) !important; transition: var(--hf-transition-fast);">
+                                View Profile <i class="bi bi-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Company 6: Amazon -->
+            <div class="col">
+                <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="d-flex align-items-start justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-dark shadow-sm" style="width: 52px; height: 52px; font-size: 1.3rem; color: #ff9900 !important;">
+                                    A
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Amazon.com</h5>
+                                    <span class="text-muted" style="font-size: 0.8rem;">Ecommerce • amazon.com</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-1 bg-white px-2.5 py-1 rounded-pill shadow-sm" style="font-size: 0.8rem; font-weight: 600; color: #b45309; background-color: #fef3c7 !important;">
+                                <i class="bi bi-star-fill" style="font-size: 0.75rem;"></i> 4.4
+                            </div>
+                        </div>
+                        <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                            Amazon is guided by four principles: customer obsession rather than competitor focus, passion for invention...
+                        </p>
+                    </div>
+                    <div>
+                        <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                        <div class="d-flex align-items-center justify-content-between pt-1">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 shadow-sm" style="font-size: 0.75rem; color: var(--hf-primary) !important; font-weight: 600;">
+                                <i class="bi bi-briefcase-fill me-1"></i> 41 Open Jobs
+                            </span>
+                            <a href="#" class="fw-bold hover-underline text-secondary" style="font-size: 0.85rem; color: var(--hf-secondary) !important; transition: var(--hf-transition-fast);">
+                                View Profile <i class="bi bi-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Reusable Pagination Component -->
+        <div data-component="pagination"></div>
+
+    </main>
+
+    <!-- Reusable Footer Component -->
+    <div data-component="footer"></div>
+
+    <!-- 4. Bootstrap Bundle with Popper JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- 5. HireFlow JavaScript Utilities -->
+    <script src="/home/static/home/js/component-loader.js?v=2"></script>
+    <script src="/home/static/home/js/global.js?v=2"></script>
+</body>
+</html>

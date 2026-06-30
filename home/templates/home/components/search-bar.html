@@ -1,0 +1,57 @@
+<!-- HireFlow Reusable Search Bar Form - App Modular Version -->
+<form action="/jobs/templates/jobs/jobs.html" method="GET" class="search-bar-form w-100" onsubmit="event.preventDefault();">
+    <div class="card p-2 p-md-3 border-0 shadow-md rounded-4 bg-white">
+        <div class="row g-2 align-items-center">
+            
+            <!-- 1. Keyword Search Field -->
+            <div class="col-lg-4 col-md-6 col-12">
+                <div class="input-group border-0">
+                    <span class="input-group-text bg-transparent border-0 text-primary" style="color: var(--hf-primary) !important;">
+                        <i class="bi bi-search fs-5"></i>
+                    </span>
+                    <input type="text" name="q" class="form-control border-0 ps-1" placeholder="Job title, keywords, or company..." style="font-size: 0.95rem; box-shadow: none;" required>
+                </div>
+            </div>
+            
+            <!-- Divider (Visible only on desktop/large screens) -->
+            <div class="col-lg-auto d-none d-lg-block text-muted px-2" style="border-right: 1px solid var(--hf-border-color); height: 2.5rem;"></div>
+
+            <!-- 2. Location Search Field -->
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="input-group border-0">
+                    <span class="input-group-text bg-transparent border-0 text-secondary" style="color: var(--hf-secondary) !important;">
+                        <i class="bi bi-geo-alt fs-5"></i>
+                    </span>
+                    <input type="text" name="location" class="form-control border-0 ps-1" placeholder="City, state, or Remote..." style="font-size: 0.95rem; box-shadow: none;">
+                </div>
+            </div>
+
+            <!-- Divider (Visible only on desktop/large screens) -->
+            <div class="col-lg-auto d-none d-lg-block text-muted px-2" style="border-right: 1px solid var(--hf-border-color); height: 2.5rem;"></div>
+
+            <!-- 3. Job Type Filter Dropdown -->
+            <div class="col-lg-2 col-md-6 col-12">
+                <div class="input-group border-0">
+                    <span class="input-group-text bg-transparent border-0 text-muted">
+                        <i class="bi bi-briefcase fs-5"></i>
+                    </span>
+                    <select name="type" class="form-select border-0 ps-1 bg-transparent" style="font-size: 0.95rem; box-shadow: none; cursor: pointer;">
+                        <option value="">All Types</option>
+                        <option value="full-time">Full-Time</option>
+                        <option value="part-time">Part-Time</option>
+                        <option value="remote">Remote</option>
+                        <option value="contract">Contract</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 4. Action Button Column -->
+            <div class="col-lg-2 col-md-6 col-12 ms-lg-auto">
+                <button type="submit" class="btn btn-primary-custom w-100 py-2 py-md-3 fw-bold border-0 d-flex justify-content-center align-items-center gap-2">
+                    <i class="bi bi-funnel-fill"></i> Find Jobs
+                </button>
+            </div>
+            
+        </div>
+    </div>
+</form>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireFlow Component Catalog - Reusable UI Blocks (Modular Version)</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Custom Style Sheet (Modular Path) -->
+    <link rel="stylesheet" href="/home/static/home/css/global.css?v=2">
+</head>
+<body class="bg-light">
+
+    <!-- Reusable Navbar Component -->
+    <div data-component="navbar"></div>
+
+    <main class="container py-5 my-4">
+        <!-- Catalog Header -->
+        <div class="border-bottom pb-4 mb-5">
+            <h1 class="display-5 fw-800 text-dark mb-2">HireFlow Component Catalog</h1>
+            <p class="text-muted mb-0 lead" style="font-size: 1.05rem;">
+                A centralized design system showcase showing our custom buttons, cards, forms, alerts, and navigation modules.
+            </p>
+        </div>
+
+        <!-- Section 1: Custom Buttons -->
+        <section class="mb-5">
+            <h4 class="fw-bold mb-4 text-gradient"><i class="bi bi-play-circle-fill me-2"></i>1. Theme Buttons & Typography</h4>
+            <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                <div class="d-flex flex-wrap gap-3 align-items-center">
+                    <button class="btn btn-primary-custom">Primary Action</button>
+                    <button class="btn btn-secondary-custom">Secondary Action</button>
+                    <button class="btn btn-primary-custom px-4 py-2 fw-bold d-inline-flex align-items-center gap-2">
+                        Icon Left <i class="bi bi-arrow-right"></i>
+                    </button>
+                    <a href="#" class="btn btn-secondary-custom border px-3 py-2 fw-semibold text-primary" style="border-color: rgba(79, 70, 229, 0.15) !important;">
+                        Apply Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Reusable Alerts -->
+        <section class="mb-5">
+            <h4 class="fw-bold mb-4 text-gradient"><i class="bi bi-bell-fill me-2"></i>2. Messaging Alerts</h4>
+            <div data-component="alert"></div>
+        </section>
+
+        <!-- Section 3: Search Bar -->
+        <section class="mb-5">
+            <h4 class="fw-bold mb-4 text-gradient"><i class="bi bi-search me-2"></i>3. Search Filters</h4>
+            <div data-component="search-bar"></div>
+        </section>
+
+        <!-- Section 4: Cards Layout Grid -->
+        <section class="mb-5">
+            <h4 class="fw-bold mb-4 text-gradient"><i class="bi bi-grid-fill me-2"></i>4. Dynamic Lists & Grids (Cards)</h4>
+            
+            <div class="row g-4 mb-4">
+                <!-- Job Card Column 1 -->
+                <div class="col-lg-6 col-12">
+                    <h6 class="text-muted fw-bold mb-3 text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.05em;">Job Listing Item</h6>
+                    <div data-component="job-card"></div>
+                </div>
+
+                <!-- Company Card Column 2 -->
+                <div class="col-lg-6 col-12">
+                    <h6 class="text-muted fw-bold mb-3 text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.05em;">Company Profile Item</h6>
+                    <div data-component="company-card"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Pagination Navigation -->
+        <section class="mb-5">
+            <h4 class="fw-bold mb-4 text-gradient"><i class="bi bi-arrow-left-right me-2"></i>5. Listing Pagination</h4>
+            <div class="card p-3 border-0 shadow-sm rounded-4 bg-white">
+                <div data-component="pagination"></div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Reusable Footer Component -->
+    <div data-component="footer"></div>
+
+    <!-- Bootstrap Bundle with Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Component Loader & Global Script includes -->
+    <script src="/home/static/home/js/component-loader.js?v=2"></script>
+    <script src="/home/static/home/js/global.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!-- HireFlow Global Navigation Header - App Modular Version -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white transition-base py-3" style="transition: var(--hf-transition-base);">
+    <div class="container">
+        <!-- Logo Branding -->
+        <a class="navbar-brand d-flex align-items-center fw-800 fs-4 text-dark" href="/home/templates/home/index.html">
+            <span class="p-2 bg-primary text-white rounded-3 me-2 d-inline-flex justify-content-center align-items-center" style="width: 38px; height: 38px; background: linear-gradient(135deg, var(--hf-primary), var(--hf-secondary)) !important;">
+                <i class="bi bi-briefcase-fill" style="font-size: 1.2rem;"></i>
+            </span>
+            <span class="fw-bold tracking-tight">Hire<span class="text-primary" style="color: var(--hf-primary) !important;">Flow</span></span>
+        </a>
+
+        <!-- Responsive Hamburger Toggle -->
+        <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links & CTA Buttons -->
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-2">
+                <li class="nav-item">
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/home/templates/home/index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/jobs/templates/jobs/jobs.html">Find Jobs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/companies/templates/companies/companies.html">Companies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/home/templates/home/about.html">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/contact/templates/contact/contact.html">Contact</a>
+                </li>
+            </ul>
+
+            <!-- Authentication CTAs -->
+            <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                <a href="/accounts/templates/accounts/login.html" class="btn btn-secondary-custom border-0 text-dark fw-bold px-4">Sign In</a>
+                <a href="/accounts/templates/accounts/register.html" class="btn btn-primary-custom fw-bold px-4">Post a Job</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Offset element to prevent page content from sliding underneath the fixed navbar -->
+<div style="height: 80px;"></div>

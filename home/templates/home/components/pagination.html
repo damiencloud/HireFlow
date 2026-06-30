@@ -1,0 +1,58 @@
+<!-- HireFlow Reusable Pagination Navigation - App Modular Version -->
+<nav aria-label="Job listing pagination" class="d-flex justify-content-center my-4">
+    <ul class="pagination pagination-md gap-1 border-0">
+        <!-- Previous Page Button -->
+        <li class="page-item disabled">
+            <a class="page-link rounded-3 border-0 bg-white shadow-sm d-flex align-items-center justify-content-center" href="#" aria-label="Previous" style="width: 40px; height: 40px; color: var(--hf-text-muted);">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+        </li>
+        
+        <!-- Page Numbers -->
+        <li class="page-item active">
+            <a class="page-link rounded-3 border-0 shadow-sm d-flex align-items-center justify-content-center" href="#" style="width: 40px; height: 40px; font-weight: 600; background-color: var(--hf-primary); color: var(--hf-white);">1</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link rounded-3 border-0 bg-white shadow-sm d-flex align-items-center justify-content-center" href="#" style="width: 40px; height: 40px; font-weight: 600; color: var(--hf-text-main); transition: var(--hf-transition-fast);">2</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link rounded-3 border-0 bg-white shadow-sm d-flex align-items-center justify-content-center" href="#" style="width: 40px; height: 40px; font-weight: 600; color: var(--hf-text-main); transition: var(--hf-transition-fast);">3</a>
+        </li>
+        
+        <!-- Ellipsis separator -->
+        <li class="page-item disabled d-none d-sm-inline-block">
+            <span class="page-link border-0 bg-transparent d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; color: var(--hf-text-muted);">...</span>
+        </li>
+        
+        <li class="page-item d-none d-sm-inline-block">
+            <a class="page-link rounded-3 border-0 bg-white shadow-sm d-flex align-items-center justify-content-center" href="#" style="width: 40px; height: 40px; font-weight: 600; color: var(--hf-text-main); transition: var(--hf-transition-fast);">12</a>
+        </li>
+
+        <!-- Next Page Button -->
+        <li class="page-item">
+            <a class="page-link rounded-3 border-0 bg-white shadow-sm d-flex align-items-center justify-content-center" href="#" aria-label="Next" style="width: 40px; height: 40px; color: var(--hf-primary); transition: var(--hf-transition-fast);">
+                <i class="bi bi-chevron-right"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<style>
+/* Hover transitions for pagination buttons */
+.page-link:hover {
+    background-color: var(--hf-light) !important;
+    color: var(--hf-primary) !important;
+    transform: translateY(-1px);
+}
+.page-item.active .page-link:hover {
+    background-color: var(--hf-primary-hover) !important;
+    color: var(--hf-white) !important;
+    transform: none;
+}
+.page-item.disabled .page-link {
+    background-color: var(--hf-light) !important;
+    color: var(--hf-text-muted) !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+</style>
