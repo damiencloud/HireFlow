@@ -132,4 +132,8 @@ AUTHENTICATION_BACKENDS = [
     'accounts.backends.EmailBackend',             # Email lookup support
 ]
 
+# Media Files Management (User Uploads)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 

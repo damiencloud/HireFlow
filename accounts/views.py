@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm
 from companies.models import Company
-from jobs.models import Job
+from jobs.models import Job, JobApplication
 
 def register(request):
     """
@@ -57,6 +57,8 @@ def candidate_login(request):
 def recruiter_login(request):
     return _shared_login(request, 'accounts/recruiter-login.html')
 
+
+
 @login_required
 def dashboard(request):
     """
@@ -66,18 +68,24 @@ def dashboard(request):
     profile = None
     my_companies = []
     my_jobs = []
+    my_applications = []
+    received_applications = []
     
     if user.is_candidate:
         profile = getattr(user, 'candidate_profile', None)
+        my_applications = JobApplication.objects.filter(applicant=user).select_related('job__company')
     elif user.is_recruiter:
         profile = getattr(user, 'recruiter_profile', None)
         my_companies = Company.objects.filter(owner=user)
         my_jobs = Job.objects.filter(company__in=my_companies).select_related('company')
+        received_applications = JobApplication.objects.filter(job__company__owner=user).select_related('job', 'applicant')
         
     return render(request, 'accounts/dashboard.html', {
         'profile': profile,
         'my_companies': my_companies,
         'my_jobs': my_jobs,
+        'my_applications': my_applications,
+        'received_applications': received_applications,
     })
 
 def logout_view(request):

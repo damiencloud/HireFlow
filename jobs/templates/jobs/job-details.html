@@ -26,10 +26,25 @@
                 </div>
                 <!-- Call to Action Buttons -->
                 <div class="d-flex align-items-center gap-3">
-                    <!-- Trigger Modal Button -->
-                    <button class="btn btn-primary-custom px-4 py-2.5" data-bs-toggle="modal" data-bs-target="#applyModal">
-                        Apply Now <i class="bi bi-arrow-right-short ms-1"></i>
-                    </button>
+                    {% if not request.user.is_authenticated %}
+                        <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary-custom px-4 py-2.5">
+                            Log In to Apply <i class="bi bi-box-arrow-in-right ms-1"></i>
+                        </a>
+                    {% elif request.user.is_candidate %}
+                        {% if already_applied %}
+                            <button class="btn btn-success px-4 py-2.5 fw-bold" disabled>
+                                <i class="bi bi-check-circle-fill me-1"></i> Applied
+                            </button>
+                        {% else %}
+                            <button class="btn btn-primary-custom px-4 py-2.5" data-bs-toggle="modal" data-bs-target="#applyModal">
+                                Apply Now <i class="bi bi-arrow-right-short ms-1"></i>
+                            </button>
+                        {% endif %}
+                    {% else %}
+                        <button class="btn btn-secondary px-4 py-2.5" disabled>
+                            Candidates Only
+                        </button>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -100,6 +115,7 @@
     </main>
 
     <!-- Application Modal Popup Container (#applyModal) -->
+    {% if request.user.is_authenticated and request.user.is_candidate and not already_applied %}
     <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-4 border-0 shadow-lg">
@@ -111,32 +127,39 @@
                 </div>
                 
                 <!-- Modal Form Body -->
-                <form action="#" method="POST" enctype="multipart/form-data" onsubmit="event.preventDefault(); alert('Application submitted mockup successfully!');">
+                <form action="{% url 'apply_job' job.id %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
                     <div class="modal-body p-4 d-flex flex-column gap-3">
                         
-                        <!-- Name Field -->
-                        <div>
-                            <label class="form-label small fw-bold text-dark mb-1.5">Full Name *</label>
-                            <input type="text" class="form-control px-3 py-2" placeholder="John Doe" required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
-                        </div>
-                        
-                        <!-- Email Field -->
-                        <div>
-                            <label class="form-label small fw-bold text-dark mb-1.5">Email Address *</label>
-                            <input type="email" class="form-control px-3 py-2" placeholder="johndoe@example.com" required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
+                        <!-- Name & Email (Prefilled Info) -->
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-dark mb-1.5">Candidate Name</label>
+                                <input type="text" class="form-control px-3 py-2 bg-light text-muted" value="{{ request.user.get_full_name|default:request.user.username }}" readonly style="border-radius: 0.5rem; border-color: var(--hf-border-color); font-size: 0.9rem;">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold text-dark mb-1.5">Email Address</label>
+                                <input type="text" class="form-control px-3 py-2 bg-light text-muted" value="{{ request.user.email }}" readonly style="border-radius: 0.5rem; border-color: var(--hf-border-color); font-size: 0.9rem;">
+                            </div>
                         </div>
 
                         <!-- Resume Upload Box -->
                         <div>
-                            <label class="form-label small fw-bold text-dark mb-1.5">Upload Resume/CV (PDF) *</label>
-                            <input type="file" class="form-control px-3 py-2" accept=".pdf" required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
-                            <span class="text-muted small d-block mt-1" style="font-size: 0.75rem;">Only PDF files accepted, max 5MB.</span>
+                            <label class="form-label small fw-bold text-dark mb-1.5">Upload Resume/CV (PDF or Doc) *</label>
+                            {{ apply_form.resume }}
+                            {% if apply_form.resume.errors %}
+                                <div class="text-danger small mt-1">{{ apply_form.resume.errors }}</div>
+                            {% endif %}
+                            <span class="text-muted small d-block mt-1" style="font-size: 0.75rem;">Accepted formats: PDF, DOC, DOCX. Max 5MB.</span>
                         </div>
 
                         <!-- Cover Letter Box -->
                         <div>
                             <label class="form-label small fw-bold text-dark mb-1.5">Cover Letter / Notes</label>
-                            <textarea class="form-control px-3 py-2" rows="4" placeholder="Introduce yourself and explain why you're a great fit..." style="border-radius: 0.5rem; border-color: var(--hf-border-color); resize: none;"></textarea>
+                            {{ apply_form.cover_letter }}
+                            {% if apply_form.cover_letter.errors %}
+                                <div class="text-danger small mt-1">{{ apply_form.cover_letter.errors }}</div>
+                            {% endif %}
                         </div>
 
                     </div>
@@ -151,4 +174,5 @@
             </div>
         </div>
     </div>
+    {% endif %}
 {% endblock %}

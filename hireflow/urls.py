@@ -22,6 +22,8 @@ urlpatterns = [
     path('jobs/details/', jobs.views.job_details, name='job_details_default'),
     path('jobs/<int:job_id>/', jobs.views.job_details, name='job_details'),
     path('jobs/post/', jobs.views.job_posting, name='job_posting'),
+    path('jobs/<int:job_id>/apply/', jobs.views.apply_job, name='apply_job'),
+    path('applications/<int:application_id>/status/', jobs.views.update_application_status, name='update_application_status'),
     path('companies/', companies.views.companies, name='companies'),
     
     # Accounts Views
@@ -52,3 +54,8 @@ urlpatterns = [
     # 3. Dynamic Static Resource serving fallback (For local app/static pathing support)
     path('<str:app_name>/static/<path:path>', serve, {'document_root': settings.BASE_DIR}),
 ]
+
+from django.conf.urls.static import static
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

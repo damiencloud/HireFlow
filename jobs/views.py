@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from .models import Job
-from .forms import JobPostingForm
+from .models import Job, JobApplication
+from .forms import JobPostingForm, JobApplicationForm
 from companies.models import Company
 
 def jobs(request):
@@ -60,7 +60,7 @@ def jobs(request):
 
 def job_details(request, job_id=None):
     """
-    Displays the details of a single job. Falls back to first job if no ID matches.
+    Displays the details of a single job. Passes application forms for active candidate sessions.
     """
     if job_id is None:
         job = Job.objects.first()
@@ -70,8 +70,16 @@ def job_details(request, job_id=None):
     else:
         job = get_object_or_404(Job, pk=job_id)
         
+    apply_form = None
+    already_applied = False
+    if request.user.is_authenticated and request.user.is_candidate:
+        apply_form = JobApplicationForm()
+        already_applied = JobApplication.objects.filter(job=job, applicant=request.user).exists()
+        
     return render(request, 'jobs/job-details.html', {
-        'job': job
+        'job': job,
+        'apply_form': apply_form,
+        'already_applied': already_applied,
     })
 
 @login_required
@@ -108,3 +116,64 @@ def job_posting(request):
     return render(request, 'jobs/job-posting.html', {
         'form': form
     })
+
+@login_required
+def apply_job(request, job_id):
+    """
+    Handles candidate job submissions, verifies duplicate check, and uploads files.
+    """
+    if not request.user.is_candidate:
+        messages.error(request, "Only candidates are authorized to apply for jobs.")
+        return redirect('job_details', job_id=job_id)
+
+    job = get_object_or_404(Job, pk=job_id)
+
+    # Double application lock
+    if JobApplication.objects.filter(job=job, applicant=request.user).exists():
+        messages.warning(request, "You have already applied to this job listing.")
+        return redirect('job_details', job_id=job_id)
+
+    if request.method == 'POST':
+        form = JobApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.job = job
+            application.applicant = request.user
+            application.save()
+            messages.success(request, f"Successfully submitted application for {job.title}!")
+            return redirect('dashboard')
+        else:
+            messages.error(request, "Failed to submit application. Please verify file uploads.")
+    
+    return redirect('job_details', job_id=job_id)
+
+@login_required
+def update_application_status(request, application_id):
+    """
+    Recruiter-only controller to manage candidate pipeline stages.
+    """
+    if not request.user.is_recruiter:
+        messages.error(request, "Access denied.")
+        return redirect('dashboard')
+
+    application = get_object_or_404(JobApplication, pk=application_id)
+
+    # Verify company ownership
+    if application.job.company.owner != request.user:
+        messages.error(request, "You are unauthorized to update the candidate status for this posting.")
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        status = request.POST.get('status', '').strip()
+        if status in dict(JobApplication.STATUS_CHOICES):
+            application.status = status
+            application.save()
+            messages.success(
+                request, 
+                f"Updated status for {application.applicant.get_full_name() or application.applicant.username} "
+                f"to '{application.get_status_display()}'."
+            )
+        else:
+            messages.error(request, "Invalid status choice selected.")
+
+    return redirect('dashboard')
