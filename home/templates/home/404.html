@@ -1,0 +1,23 @@
+{% extends "home/base.html" %}
+
+{% block title %}Page Not Found - HireFlow{% endblock %}
+
+{% block content %}
+<main class="flex-grow-1 container d-flex align-items-center justify-content-center py-5">
+    <div class="text-center bg-white p-5 rounded-4 shadow-sm border border-light max-width-form mx-auto" style="max-width: 550px;">
+        <div class="display-1 fw-800 text-primary mb-3" style="color: var(--hf-primary) !important;">404</div>
+        <h2 class="fw-bold text-dark mb-3">Page Not Found</h2>
+        <p class="text-muted mb-4" style="line-height: 1.6;">
+            Sorry! The page you are looking for does not exist, has been removed, or is temporarily unavailable.
+        </p>
+        <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+            <a href="javascript:history.back()" class="btn btn-secondary-custom fw-bold px-4 py-2 border" style="border-color: var(--hf-border-color) !important;">
+                <i class="bi bi-arrow-left-short me-1" style="font-size: 1.1rem; font-weight: 800;"></i> Go Back
+            </a>
+            <a href="{% url 'index' %}" class="btn btn-primary-custom fw-bold px-4 py-2 border-0">
+                <i class="bi bi-house-door-fill me-1"></i> Return Home
+            </a>
+        </div>
+    </div>
+</main>
+{% endblock %}

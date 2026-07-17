@@ -21,3 +21,15 @@ def about(request):
     Renders the company About page.
     """
     return render(request, 'home/about.html')
+
+def error_404_view(request, exception):
+    """
+    Renders custom 404 (Page Not Found) template.
+    """
+    return render(request, 'home/404.html', status=404)
+
+def error_403_view(request, exception=None):
+    """
+    Renders custom 403 (Permission Denied) template.
+    """
+    return render(request, 'home/403.html', status=403)
