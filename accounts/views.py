@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import UserRegistrationForm, UserLoginForm
 from companies.models import Company
-from jobs.models import Job, JobApplication
+from jobs.models import Job, JobApplication, SavedJob
 
 def register(request):
     """
@@ -96,8 +96,16 @@ def logout_view(request):
     messages.info(request, "You have successfully logged out.")
     return redirect('index')
 
+@login_required
 def saved_jobs(request):
     """
     Renders candidate saved jobs list.
     """
-    return render(request, 'accounts/saved-jobs.html')
+    if not request.user.is_candidate:
+        messages.error(request, "Only candidates are authorized to view saved jobs.")
+        return redirect('dashboard')
+        
+    bookmarks = SavedJob.objects.filter(user=request.user).select_related('job__company')
+    return render(request, 'accounts/saved-jobs.html', {
+        'saved_jobs': bookmarks
+    })

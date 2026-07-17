@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from .models import Job, JobApplication
+from .models import Job, JobApplication, SavedJob
 from .forms import JobPostingForm, JobApplicationForm
 from companies.models import Company
 
@@ -72,14 +72,17 @@ def job_details(request, job_id=None):
         
     apply_form = None
     already_applied = False
+    is_bookmarked = False
     if request.user.is_authenticated and request.user.is_candidate:
         apply_form = JobApplicationForm()
         already_applied = JobApplication.objects.filter(job=job, applicant=request.user).exists()
+        is_bookmarked = SavedJob.objects.filter(user=request.user, job=job).exists()
         
     return render(request, 'jobs/job-details.html', {
         'job': job,
         'apply_form': apply_form,
         'already_applied': already_applied,
+        'is_bookmarked': is_bookmarked,
     })
 
 @login_required
@@ -177,3 +180,94 @@ def update_application_status(request, application_id):
             messages.error(request, "Invalid status choice selected.")
 
     return redirect('dashboard')
+
+@login_required
+def edit_job(request, job_id):
+    """
+    Recruiter-only view to update an existing job posting.
+    Verifies that the recruiter owns the company that listed the job.
+    """
+    if not request.user.is_recruiter:
+        messages.error(request, "Only recruiters are authorized to edit job listings.")
+        return redirect('dashboard')
+
+    job = get_object_or_404(Job, pk=job_id)
+
+    # Access Control: Verify ownership
+    if job.company.owner != request.user:
+        messages.error(request, "You are not authorized to edit this job listing.")
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        form = JobPostingForm(request.POST, instance=job, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Successfully updated job: {job.title}!")
+            return redirect('dashboard')
+        else:
+            messages.error(request, "Failed to update job listing. Please check form errors.")
+    else:
+        form = JobPostingForm(instance=job, user=request.user)
+
+    return render(request, 'jobs/job-posting.html', {
+        'form': form
+    })
+
+@login_required
+def delete_job(request, job_id):
+    """
+    Recruiter-only endpoint to delete a job posting.
+    Validates ownership before deletion.
+    """
+    if not request.user.is_recruiter:
+        messages.error(request, "Only recruiters are authorized to delete job listings.")
+        return redirect('dashboard')
+
+    job = get_object_or_404(Job, pk=job_id)
+
+    # Access Control: Verify ownership
+    if job.company.owner != request.user:
+        messages.error(request, "You are not authorized to delete this job listing.")
+        return redirect('dashboard')
+
+    if request.method == 'POST':
+        title = job.title
+        job.delete()
+        messages.success(request, f"Successfully deleted job vacancy: {title}!")
+        
+    return redirect('dashboard')
+
+@login_required
+def save_job(request, job_id):
+    """
+    Candidate-only endpoint to bookmark/save a job listing.
+    """
+    if not request.user.is_candidate:
+        messages.error(request, "Only candidates are authorized to save jobs.")
+        return redirect('job_details', job_id=job_id)
+
+    job = get_object_or_404(Job, pk=job_id)
+
+    # Prevent duplicate bookmarks
+    SavedJob.objects.get_or_create(user=request.user, job=job)
+    messages.success(request, f"Bookmarked job opening: {job.title}.")
+
+    # Redirect to previous page if available, else dashboard
+    next_url = request.GET.get('next') or request.META.get('HTTP_REFERER') or 'dashboard'
+    return redirect(next_url)
+
+@login_required
+def remove_saved_job(request, job_id):
+    """
+    Candidate-only endpoint to remove a bookmarked/saved job listing.
+    """
+    if not request.user.is_candidate:
+        messages.error(request, "Access unauthorized.")
+        return redirect('dashboard')
+
+    job = get_object_or_404(Job, pk=job_id)
+    SavedJob.objects.filter(user=request.user, job=job).delete()
+    messages.success(request, f"Removed bookmark for {job.title}.")
+
+    next_url = request.GET.get('next') or request.META.get('HTTP_REFERER') or 'dashboard'
+    return redirect(next_url)

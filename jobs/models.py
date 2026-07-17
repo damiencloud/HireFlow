@@ -134,3 +134,31 @@ class JobApplication(models.Model):
 
     def __str__(self):
         return f"{self.applicant.username} - {self.job.title}"
+
+class SavedJob(models.Model):
+    """
+    Represents a job vacancy bookmarked/saved by a candidate.
+    """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='saved_jobs',
+        help_text="Candidate bookmarking this listing"
+    )
+    job = models.ForeignKey(
+        Job,
+        on_delete=models.CASCADE,
+        related_name='saved_by_users',
+        help_text="The bookmarked job vacancy"
+    )
+    saved_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text="Timestamp when the candidate saved this listing"
+    )
+
+    class Meta:
+        ordering = ['-saved_date']
+        unique_together = ('user', 'job')
+
+    def __str__(self):
+        return f"{self.user.username} saved {self.job.title}"

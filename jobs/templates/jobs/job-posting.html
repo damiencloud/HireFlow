@@ -1,7 +1,7 @@
 {% extends "home/base.html" %}
 
-{% block title %}Post a New Job - Recruiter Portal - HireFlow{% endblock %}
-{% block description %}Recruiting tech talents? Post a job on HireFlow and reach thousands of developers, designers, and managers globally.{% endblock %}
+{% block title %}{% if form.instance.pk %}Edit Job - Recruiter Portal{% else %}Post a New Job - Recruiter Portal{% endif %} - HireFlow{% endblock %}
+{% block description %}{% if form.instance.pk %}Update your existing job listing details on HireFlow.{% else %}Recruiting tech talents? Post a job on HireFlow and reach developers globally.{% endif %}{% endblock %}
 
 {% block content %}
     <!-- Header Banner -->
@@ -11,8 +11,8 @@
                 <span class="badge px-3 py-2 rounded-pill bg-primary-subtle text-primary border border-primary-subtle mb-2 fw-bold" style="color: var(--hf-primary) !important;">
                     For Recruiters
                 </span>
-                <h1 class="fw-800 text-dark mb-1">Post an Open Position</h1>
-                <p class="text-muted mb-0">Fill out the details below to publish your opening and find your next talent match.</p>
+                <h1 class="fw-800 text-dark mb-1">{% if form.instance.pk %}Edit Job Listing{% else %}Post an Open Position{% endif %}</h1>
+                <p class="text-muted mb-0">{% if form.instance.pk %}Update the details below to refine your job posting details.{% else %}Fill out the details below to publish your opening and find your next talent match.{% endif %}</p>
             </div>
         </div>
     </header>
@@ -24,7 +24,7 @@
             <!-- Core Form Card -->
             <div class="card p-4 p-md-5 border-0 shadow-sm rounded-4 bg-white">
                 
-                <form action="{% url 'job_posting' %}" method="POST">
+                <form method="POST">
                     {% csrf_token %}
 
                     {% if form.non_field_errors %}
@@ -135,9 +135,9 @@
 
                         <!-- Action Submit Buttons -->
                         <div class="row pt-2 g-3">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary-custom w-100 py-2.5 fw-bold border-0">Publish Posting</button>
-                            </div>
+                             <div class="col-12">
+                                 <button type="submit" class="btn btn-primary-custom w-100 py-2.5 fw-bold border-0">{% if form.instance.pk %}Save Changes{% else %}Publish Posting{% endif %}</button>
+                             </div>
                         </div>
 
                     </div>
