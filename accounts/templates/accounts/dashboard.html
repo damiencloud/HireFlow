@@ -1,7 +1,7 @@
 {% extends "home/base.html" %}
 
-{% block title %}Candidate Dashboard - HireFlow{% endblock %}
-{% block description %}Candidate dashboard portal. Track applied status indicators, manage profile settings, and review resume submissions.{% endblock %}
+{% block title %}{% if request.user.is_recruiter %}Recruiter Dashboard{% else %}Candidate Dashboard{% endif %} - HireFlow{% endblock %}
+{% block description %}Manage your HireFlow portal, view listings, and track application metrics.{% endblock %}
 
 {% block content %}
     <!-- Main Dashboard Section -->
@@ -11,152 +11,245 @@
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-5 bg-white p-4 rounded-4 shadow-sm border border-light">
             <div>
                 <span class="badge px-3 py-1.5 rounded-pill bg-primary-subtle text-primary border border-primary-subtle mb-2 fw-bold" style="color: var(--hf-primary) !important;">
-                    Candidate Portal
+                    {% if request.user.is_recruiter %}Recruiter Portal{% else %}Candidate Portal{% endif %}
                 </span>
-                <h1 class="h2 fw-800 text-dark mb-0">Welcome Back, John Doe</h1>
-                <p class="text-muted small mb-0 mt-1">Review your active applications and track recruiter screening pipelines.</p>
+                <h1 class="h2 fw-800 text-dark mb-0">Welcome Back, {{ request.user.get_full_name|default:request.user.username }}</h1>
+                <p class="text-muted small mb-0 mt-1">
+                    {% if request.user.is_recruiter %}
+                        Manage your job vacancy postings and review candidate applicant pipelines.
+                    {% else %}
+                        Review your active applications and track recruiter screening pipelines.
+                    {% endif %}
+                </p>
             </div>
             <div>
-                <a href="/jobs/templates/jobs/jobs.html" class="btn btn-primary-custom fw-bold px-4 py-2.5 border-0">Find More Jobs</a>
+                {% if request.user.is_recruiter %}
+                    <a href="{% url 'job_posting' %}" class="btn btn-primary-custom fw-bold px-4 py-2.5 border-0">Post a New Job</a>
+                {% else %}
+                    <a href="{% url 'jobs' %}" class="btn btn-primary-custom fw-bold px-4 py-2.5 border-0">Find More Jobs</a>
+                {% endif %}
             </div>
         </div>
 
-        <!-- 3-Column Quick Metrics row -->
-        <div class="row g-4 mb-5">
-            <!-- Stat 1: Applied -->
-            <div class="col-lg-4 col-sm-6 col-12">
-                <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Applied Roles</span>
-                            <h2 class="fw-800 text-dark mb-0 mt-1">12</h2>
-                        </div>
-                        <div class="p-3 bg-light rounded-3 text-primary" style="background-color: rgba(79, 70, 229, 0.08) !important; color: var(--hf-primary) !important;">
-                            <i class="bi bi-briefcase-fill fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stat 2: Interviewing -->
-            <div class="col-lg-4 col-sm-6 col-12">
-                <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Interviewing</span>
-                            <h2 class="fw-800 text-dark mb-0 mt-1">3</h2>
-                        </div>
-                        <div class="p-3 bg-light rounded-3 text-warning" style="background-color: rgba(245, 158, 11, 0.08) !important; color: var(--hf-warning) !important;">
-                            <i class="bi bi-chat-left-text-fill fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Stat 3: Saved Jobs -->
-            <div class="col-lg-4 col-sm-12 col-12">
-                <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Saved Positions</span>
-                            <h2 class="fw-800 text-dark mb-0 mt-1">8</h2>
-                        </div>
-                        <div class="p-3 bg-light rounded-3 text-secondary" style="background-color: rgba(139, 92, 246, 0.08) !important; color: var(--hf-secondary) !important;">
-                            <i class="bi bi-bookmark-fill fs-3"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Split Grid Details Panel -->
-        <div class="row g-4">
+        {% if request.user.is_recruiter %}
+            <!-- RECRUITER DASHBOARD CONTENT -->
             
-            <!-- Left Grid: Applications table/list -->
-            <div class="col-lg-8 col-12">
-                <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
-                    <h5 class="fw-bold text-dark mb-4">Recent Applications</h5>
-                    
-                    <div class="d-flex flex-column gap-3">
-                        <!-- Application 1 -->
-                        <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-3 fw-bold text-primary shadow-sm" style="width: 48px; height: 48px; font-size: 1.1rem; color: #4285f4 !important;">
-                                    G
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-0 text-dark">Senior Software Engineer</h6>
-                                    <span class="text-muted small">Google LLC • Applied June 27, 2026</span>
-                                </div>
+            <!-- Quick Metrics row -->
+            <div class="row g-4 mb-5">
+                <!-- Stat 1: Posted Jobs -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">My Posted Jobs</span>
+                                <h2 class="fw-800 text-dark mb-0 mt-1">{{ my_jobs.count }}</h2>
                             </div>
-                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-3 py-1.5 text-center align-self-start align-self-sm-center" style="font-size: 0.75rem;">Interviewing</span>
-                        </div>
-
-                        <!-- Application 2 -->
-                        <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-3 fw-bold text-secondary shadow-sm" style="width: 48px; height: 48px; font-size: 1.1rem; color: var(--hf-secondary) !important;">
-                                    S
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-0 text-dark">Product UX/UI Designer</h6>
-                                    <span class="text-muted small">Stripe Inc. • Applied June 24, 2026</span>
-                                </div>
+                            <div class="p-3 bg-light rounded-3 text-primary" style="background-color: rgba(79, 70, 229, 0.08) !important; color: var(--hf-primary) !important;">
+                                <i class="bi bi-briefcase-fill fs-3"></i>
                             </div>
-                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 text-center align-self-start align-self-sm-center" style="font-size: 0.75rem; color: var(--hf-primary) !important;">Applied</span>
-                        </div>
-
-                        <!-- Application 3 -->
-                        <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-3 fw-bold text-danger shadow-sm" style="width: 48px; height: 48px; font-size: 1.1rem; color: #f24e1e !important;">
-                                    F
-                                </div>
-                                <div>
-                                    <h6 class="fw-bold mb-0 text-dark">Staff DevOps Engineer</h6>
-                                    <span class="text-muted small">Figma Inc. • Applied June 20, 2026</span>
-                                </div>
-                            </div>
-                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1.5 text-center align-self-start align-self-sm-center" style="font-size: 0.75rem;">Offered</span>
                         </div>
                     </div>
+                </div>
 
+                <!-- Stat 2: Companies Managed -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Companies Managed</span>
+                                <h2 class="fw-800 text-dark mb-0 mt-1">{{ my_companies.count }}</h2>
+                            </div>
+                            <div class="p-3 bg-light rounded-3 text-warning" style="background-color: rgba(245, 158, 11, 0.08) !important; color: var(--hf-warning) !important;">
+                                <i class="bi bi-building fs-3"></i>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Right Grid: Profile summary side checks -->
-            <div class="col-lg-4 col-12 d-flex flex-column gap-4">
+            <!-- Split Grid Details Panel -->
+            <div class="row g-4">
+                <!-- Left Grid: Posted Jobs list -->
+                <div class="col-lg-8 col-12">
+                    <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                        <h5 class="fw-bold text-dark mb-4">Active Vacancy Postings</h5>
+                        
+                        <div class="d-flex flex-column gap-3">
+                            {% for job in my_jobs %}
+                                <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-3 fw-bold text-primary shadow-sm overflow-hidden" style="width: 48px; height: 48px; font-size: 1.1rem; color: var(--hf-primary) !important;">
+                                            {% if job.company.logo %}
+                                                <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-100 h-100" style="object-fit: cover;">
+                                            {% else %}
+                                                {{ job.company.name|slice:":1"|upper }}
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0 text-dark">{{ job.title }}</h6>
+                                            <span class="text-muted small">{{ job.company.name }} • {{ job.location }} • Posted {{ job.posted_date|date:"M d, Y" }}</span>
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'job_details' job.id %}" class="btn btn-secondary-custom btn-sm px-3 py-1.5 fw-semibold align-self-start align-self-sm-center">
+                                        View Details
+                                    </a>
+                                </div>
+                            {% empty %}
+                                <div class="text-center py-5">
+                                    <i class="bi bi-journal-x fs-2 text-muted mb-2 d-block"></i>
+                                    <p class="text-muted mb-0 small">You haven't posted any job vacancies yet.</p>
+                                    <a href="{% url 'job_posting' %}" class="btn btn-primary-custom btn-sm mt-3 px-3">Post First Job</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Grid: Managed Companies list -->
+                <div class="col-lg-4 col-12">
+                    <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                        <h5 class="fw-bold text-dark mb-4">My Companies</h5>
+                        
+                        <div class="d-flex flex-column gap-3">
+                            {% for company in my_companies %}
+                                <div class="d-flex align-items-center gap-3 p-2 bg-light rounded-3 border">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-3 fw-bold text-secondary shadow-sm overflow-hidden" style="width: 40px; height: 40px; font-size: 1rem;">
+                                        {% if company.logo %}
+                                            <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="w-100 h-100" style="object-fit: cover;">
+                                        {% else %}
+                                            {{ company.name|slice:":1"|upper }}
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-dark small">{{ company.name }}</h6>
+                                        <span class="text-muted" style="font-size: 0.75rem;">{{ company.location }}</span>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="text-center py-4">
+                                    <p class="text-muted mb-0 small">No companies registered to your account.</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <!-- CANDIDATE DASHBOARD CONTENT -->
+            
+            <!-- Quick Metrics row -->
+            <div class="row g-4 mb-5">
+                <!-- Stat 1: Applied -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Applied Roles</span>
+                                <h2 class="fw-800 text-dark mb-0 mt-1">3</h2>
+                            </div>
+                            <div class="p-3 bg-light rounded-3 text-primary" style="background-color: rgba(79, 70, 229, 0.08) !important; color: var(--hf-primary) !important;">
+                                <i class="bi bi-briefcase-fill fs-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stat 2: Interviewing -->
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <span class="text-muted small fw-bold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Interviewing</span>
+                                <h2 class="fw-800 text-dark mb-0 mt-1">1</h2>
+                            </div>
+                            <div class="p-3 bg-light rounded-3 text-warning" style="background-color: rgba(245, 158, 11, 0.08) !important; color: var(--hf-warning) !important;">
+                                <i class="bi bi-chat-left-text-fill fs-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Split Grid Details Panel -->
+            <div class="row g-4">
                 
-                <!-- Profile completeness Card -->
-                <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
-                    <h5 class="fw-bold text-dark mb-3">Profile Setup</h5>
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="text-muted small fw-semibold">Progress</span>
-                        <span class="text-primary small fw-bold" style="color: var(--hf-primary) !important;">75%</span>
+                <!-- Left Grid: Applications table/list -->
+                <div class="col-lg-8 col-12">
+                    <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                        <h5 class="fw-bold text-dark mb-4">Recent Applications</h5>
+                        
+                        <div class="d-flex flex-column gap-3">
+                            <!-- Application 1 -->
+                            <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-3 fw-bold text-primary shadow-sm" style="width: 48px; height: 48px; font-size: 1.1rem; color: #4285f4 !important;">
+                                        G
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-dark">Senior Software Engineer</h6>
+                                        <span class="text-muted small">Google LLC • Applied June 27, 2026</span>
+                                    </div>
+                                </div>
+                                <span class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-3 py-1.5 text-center align-self-start align-self-sm-center" style="font-size: 0.75rem;">Interviewing</span>
+                            </div>
+
+                            <!-- Application 2 -->
+                            <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-3 fw-bold text-secondary shadow-sm" style="width: 48px; height: 48px; font-size: 1.1rem; color: var(--hf-secondary) !important;">
+                                        S
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-dark">Product UX/UI Designer</h6>
+                                        <span class="text-muted small">Stripe Inc. • Applied June 24, 2026</span>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 text-center align-self-start align-self-sm-center" style="font-size: 0.75rem; color: var(--hf-primary) !important;">Applied</span>
+                            </div>
+
+                            <!-- Application 3 -->
+                            <div class="p-3 bg-light rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-3 fw-bold text-danger shadow-sm" style="width: 48px; height: 48px; font-size: 1.1rem; color: #f24e1e !important;">
+                                        F
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-0 text-dark">Staff DevOps Engineer</h6>
+                                        <span class="text-muted small">Figma Inc. • Applied June 20, 2026</span>
+                                    </div>
+                                </div>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1.5 text-center align-self-start align-self-sm-center" style="font-size: 0.75rem;">Offered</span>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Progress Bar -->
-                    <div class="progress mb-4" style="height: 8px; border-radius: 4px;">
-                        <div class="progress-bar" role="progressbar" style="width: 75%; background-color: var(--hf-primary);" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <ul class="list-unstyled d-flex flex-column gap-2 small fw-semibold text-muted mb-0" style="padding-left: 0.5rem;">
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Account Created</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Contact Details Added</li>
-                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> Resume Portfolios Uploaded</li>
-                        <li><i class="bi bi-circle text-muted me-2"></i> Add Cover Letter Intro</li>
-                    </ul>
                 </div>
 
-                <!-- Saved Jobs redirect -->
-                <div class="card p-4 border-0 shadow-sm rounded-4 bg-white text-center">
-                    <h6 class="fw-bold text-dark mb-2">Manage Bookmarks</h6>
-                    <p class="text-muted small mb-3">You have 8 jobs bookmarked for review.</p>
-                    <a href="/accounts/templates/accounts/saved-jobs.html" class="btn btn-secondary-custom w-100 fw-bold border" style="border-color: var(--hf-border-color) !important; font-size: 0.9rem;">
-                        View Saved Jobs
-                    </a>
+                <!-- Right Grid: Profile summary side checks -->
+                <div class="col-lg-4 col-12 d-flex flex-column gap-4">
+                    
+                    <!-- Profile completeness Card -->
+                    <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
+                        <h5 class="fw-bold text-dark mb-3">Profile Setup</h5>
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <span class="text-muted small fw-semibold">Progress</span>
+                            <span class="text-primary small fw-bold" style="color: var(--hf-primary) !important;">75%</span>
+                        </div>
+                        <!-- Progress Bar -->
+                        <div class="progress mb-4" style="height: 8px; border-radius: 4px;">
+                            <div class="progress-bar" role="progressbar" style="width: 75%; background-color: var(--hf-primary);" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <ul class="list-unstyled d-flex flex-column gap-2 small fw-semibold text-muted mb-0" style="padding-left: 0.5rem;">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Account Created</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Contact Details Added</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i> Resume Portfolios Uploaded</li>
+                            <li><i class="bi bi-circle text-muted me-2"></i> Add Cover Letter Intro</li>
+                        </ul>
+                    </div>
+
                 </div>
 
             </div>
-
-        </div>
+        {% endif %}
     </main>
 {% endblock %}

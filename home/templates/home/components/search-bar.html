@@ -1,5 +1,5 @@
 <!-- HireFlow Reusable Search Bar Form - App Modular Version -->
-<form action="/jobs/templates/jobs/jobs.html" method="GET" class="search-bar-form w-100" onsubmit="event.preventDefault();">
+<form action="{% url 'jobs' %}" method="GET" class="search-bar-form w-100">
     <div class="card p-2 p-md-3 border-0 shadow-md rounded-4 bg-white">
         <div class="row g-2 align-items-center">
             
@@ -9,7 +9,7 @@
                     <span class="input-group-text bg-transparent border-0 text-primary" style="color: var(--hf-primary) !important;">
                         <i class="bi bi-search fs-5"></i>
                     </span>
-                    <input type="text" name="q" class="form-control border-0 ps-1" placeholder="Job title, keywords, or company..." style="font-size: 0.95rem; box-shadow: none;" required>
+                    <input type="text" name="q" class="form-control border-0 ps-1" placeholder="Job title, keywords, or company..." style="font-size: 0.95rem; box-shadow: none;" value="{{ q }}">
                 </div>
             </div>
             
@@ -22,7 +22,7 @@
                     <span class="input-group-text bg-transparent border-0 text-secondary" style="color: var(--hf-secondary) !important;">
                         <i class="bi bi-geo-alt fs-5"></i>
                     </span>
-                    <input type="text" name="location" class="form-control border-0 ps-1" placeholder="City, state, or Remote..." style="font-size: 0.95rem; box-shadow: none;">
+                    <input type="text" name="location" class="form-control border-0 ps-1" placeholder="City, state, or Remote..." style="font-size: 0.95rem; box-shadow: none;" value="{{ location }}">
                 </div>
             </div>
 
@@ -35,12 +35,13 @@
                     <span class="input-group-text bg-transparent border-0 text-muted">
                         <i class="bi bi-briefcase fs-5"></i>
                     </span>
-                    <select name="type" class="form-select border-0 ps-1 bg-transparent" style="font-size: 0.95rem; box-shadow: none; cursor: pointer;">
+                    <select name="job_type" class="form-select border-0 ps-1 bg-transparent" style="font-size: 0.95rem; box-shadow: none; cursor: pointer;">
                         <option value="">All Types</option>
-                        <option value="full-time">Full-Time</option>
-                        <option value="part-time">Part-Time</option>
-                        <option value="remote">Remote</option>
-                        <option value="contract">Contract</option>
+                        <option value="full_time" {% if job_type_filter == 'full_time' %}selected{% endif %}>Full-Time</option>
+                        <option value="part_time" {% if job_type_filter == 'part_time' %}selected{% endif %}>Part-Time</option>
+                        <option value="remote" {% if job_type_filter == 'remote' %}selected{% endif %}>Remote</option>
+                        <option value="contract" {% if job_type_filter == 'contract' %}selected{% endif %}>Contract</option>
+                        <option value="internship" {% if job_type_filter == 'internship' %}selected{% endif %}>Internship</option>
                     </select>
                 </div>
             </div>

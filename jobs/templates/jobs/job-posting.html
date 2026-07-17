@@ -24,45 +24,60 @@
             <!-- Core Form Card -->
             <div class="card p-4 p-md-5 border-0 shadow-sm rounded-4 bg-white">
                 
-                <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Job published mockup successfully!');">
-                    
+                <form action="{% url 'job_posting' %}" method="POST">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger rounded-3">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
                     <div class="d-flex flex-column gap-4">
                         
-                        <!-- Section 1: Core Job Details -->
+                        <!-- Section 1: Basic Specifications -->
                         <div>
                             <h5 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-info-circle-fill text-primary me-2" style="color: var(--hf-primary) !important;"></i> 1. Basic Specifications</h5>
                             
                             <div class="row g-3">
-                                <!-- Title -->
-                                <div class="col-md-6 col-12">
-                                    <label class="form-label small fw-bold text-dark mb-1">Job Title *</label>
-                                    <input type="text" name="title" class="form-control px-3 py-2" placeholder="e.g. Python Developer" required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
-                                </div>
                                 <!-- Company -->
                                 <div class="col-md-6 col-12">
                                     <label class="form-label small fw-bold text-dark mb-1">Company Name *</label>
-                                    <input type="text" name="company_name" class="form-control px-3 py-2" placeholder="e.g. Stripe Inc." required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
+                                    {{ form.company }}
+                                    {% if form.company.errors %}
+                                        <div class="text-danger small mt-1">{{ form.company.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <!-- Title -->
+                                <div class="col-md-6 col-12">
+                                    <label class="form-label small fw-bold text-dark mb-1">Job Title *</label>
+                                    {{ form.title }}
+                                    {% if form.title.errors %}
+                                        <div class="text-danger small mt-1">{{ form.title.errors }}</div>
+                                    {% endif %}
                                 </div>
                                 <!-- Category -->
                                 <div class="col-md-6 col-12">
                                     <label class="form-label small fw-bold text-dark mb-1">Category *</label>
-                                    <select name="category" class="form-select px-3 py-2" required style="border-radius: 0.5rem; border-color: var(--hf-border-color); cursor: pointer;">
-                                        <option value="">Select Category</option>
-                                        <option value="development">Development & Engineering</option>
-                                        <option value="design">Design & UX</option>
-                                        <option value="marketing">Marketing & Sales</option>
-                                        <option value="management">Management & HR</option>
-                                    </select>
+                                    {{ form.category }}
+                                    {% if form.category.errors %}
+                                        <div class="text-danger small mt-1">{{ form.category.errors }}</div>
+                                    {% endif %}
                                 </div>
                                 <!-- Location -->
                                 <div class="col-md-6 col-12">
                                     <label class="form-label small fw-bold text-dark mb-1">Location *</label>
-                                    <input type="text" name="location" class="form-control px-3 py-2" placeholder="e.g. San Francisco, CA or Remote" required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
+                                    {{ form.location }}
+                                    {% if form.location.errors %}
+                                        <div class="text-danger small mt-1">{{ form.location.errors }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Section 2: Salary & Employment Type -->
+                        <!-- Section 2: Compensation & Type -->
                         <div>
                             <h5 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-cash-stack text-primary me-2" style="color: var(--hf-primary) !important;"></i> 2. Compensation & Type</h5>
                             
@@ -70,62 +85,58 @@
                                 <!-- Type -->
                                 <div class="col-md-6 col-12">
                                     <label class="form-label small fw-bold text-dark mb-1">Employment Type *</label>
-                                    <select name="job_type" class="form-select px-3 py-2" required style="border-radius: 0.5rem; border-color: var(--hf-border-color); cursor: pointer;">
-                                        <option value="full-time">Full-Time</option>
-                                        <option value="part-time">Part-Time</option>
-                                        <option value="remote">Remote Only</option>
-                                        <option value="contract">Contract</option>
-                                    </select>
+                                    {{ form.job_type }}
+                                    {% if form.job_type.errors %}
+                                        <div class="text-danger small mt-1">{{ form.job_type.errors }}</div>
+                                    {% endif %}
                                 </div>
                                 <!-- Experience -->
                                 <div class="col-md-6 col-12">
                                     <label class="form-label small fw-bold text-dark mb-1">Experience Level *</label>
-                                    <select name="experience" class="form-select px-3 py-2" required style="border-radius: 0.5rem; border-color: var(--hf-border-color); cursor: pointer;">
-                                        <option value="entry">Entry Level</option>
-                                        <option value="mid">Mid Level</option>
-                                        <option value="senior">Senior Level</option>
-                                        <option value="executive">Executive</option>
-                                    </select>
+                                    {{ form.experience_level }}
+                                    {% if form.experience_level.errors %}
+                                        <div class="text-danger small mt-1">{{ form.experience_level.errors }}</div>
+                                    {% endif %}
                                 </div>
-                                <!-- Min Salary -->
-                                <div class="col-md-6 col-6">
-                                    <label class="form-label small fw-bold text-dark mb-1">Min Salary ($/yr)</label>
-                                    <input type="number" name="salary_min" class="form-control px-3 py-2" placeholder="e.g. 100000" style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
+                                <!-- Salary -->
+                                <div class="col-md-6 col-12">
+                                    <label class="form-label small fw-bold text-dark mb-1">Salary Range / Compensation *</label>
+                                    {{ form.salary }}
+                                    {% if form.salary.errors %}
+                                        <div class="text-danger small mt-1">{{ form.salary.errors }}</div>
+                                    {% endif %}
                                 </div>
-                                <!-- Max Salary -->
-                                <div class="col-md-6 col-6">
-                                    <label class="form-label small fw-bold text-dark mb-1">Max Salary ($/yr)</label>
-                                    <input type="number" name="salary_max" class="form-control px-3 py-2" placeholder="e.g. 140000" style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
+                                <!-- Deadline -->
+                                <div class="col-md-6 col-12">
+                                    <label class="form-label small fw-bold text-dark mb-1">Application Deadline</label>
+                                    {{ form.deadline }}
+                                    {% if form.deadline.errors %}
+                                        <div class="text-danger small mt-1">{{ form.deadline.errors }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
 
                         <!-- Section 3: Technical Skills Tags & Description -->
                         <div>
-                            <h5 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-file-code-fill text-primary me-2" style="color: var(--hf-primary) !important;"></i> 3. Description & Skills</h5>
+                            <h5 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-file-code-fill text-primary me-2" style="color: var(--hf-primary) !important;"></i> 3. Description & Details</h5>
                             
                             <div class="row g-3">
-                                <!-- Technical tags -->
-                                <div class="col-12">
-                                    <label class="form-label small fw-bold text-dark mb-1">Required Skills (Comma separated) *</label>
-                                    <input type="text" name="skills" class="form-control px-3 py-2" placeholder="e.g. Python, Django, AWS, React" required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
-                                    <span class="text-muted d-block mt-1" style="font-size: 0.75rem;">Separate skills with commas (e.g. Python, SQL, Git).</span>
-                                </div>
                                 <!-- Description -->
                                 <div class="col-12">
-                                    <label class="form-label small fw-bold text-dark mb-1">Detailed Description *</label>
-                                    <textarea name="description" class="form-control px-3 py-2" rows="6" placeholder="Provide a detailed overview of the role, responsibilities, requirements, and benefits..." required style="border-radius: 0.5rem; border-color: var(--hf-border-color); resize: none;"></textarea>
+                                    <label class="form-label small fw-bold text-dark mb-1">Detailed Description & Requirements *</label>
+                                    {{ form.description }}
+                                    {% if form.description.errors %}
+                                        <div class="text-danger small mt-1">{{ form.description.errors }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
 
                         <!-- Action Submit Buttons -->
                         <div class="row pt-2 g-3">
-                            <div class="col-sm-8 col-12">
+                            <div class="col-12">
                                 <button type="submit" class="btn btn-primary-custom w-100 py-2.5 fw-bold border-0">Publish Posting</button>
-                            </div>
-                            <div class="col-sm-4 col-12">
-                                <button type="button" class="btn btn-secondary-custom w-100 py-2.5 fw-bold border" style="border-color: var(--hf-border-color) !important;">Save Draft</button>
                             </div>
                         </div>
 

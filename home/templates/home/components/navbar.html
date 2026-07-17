@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white transition-base py-3" style="transition: var(--hf-transition-base);">
     <div class="container">
         <!-- Logo Branding -->
-        <a class="navbar-brand d-flex align-items-center fw-800 fs-4 text-dark" href="/home/templates/home/index.html">
+        <a class="navbar-brand d-flex align-items-center fw-800 fs-4 text-dark" href="{% url 'index' %}">
             <span class="p-2 bg-primary text-white rounded-3 me-2 d-inline-flex justify-content-center align-items-center" style="width: 38px; height: 38px; background: linear-gradient(135deg, var(--hf-primary), var(--hf-secondary)) !important;">
                 <i class="bi bi-briefcase-fill" style="font-size: 1.2rem;"></i>
             </span>
@@ -20,26 +20,32 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-2">
                 <li class="nav-item">
-                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/home/templates/home/index.html">Home</a>
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="{% url 'index' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/jobs/templates/jobs/jobs.html">Find Jobs</a>
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="{% url 'jobs' %}">Find Jobs</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/companies/templates/companies/companies.html">Companies</a>
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="{% url 'companies' %}">Companies</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/home/templates/home/about.html">About Us</a>
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="{% url 'about' %}">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="/contact/templates/contact/contact.html">Contact</a>
+                    <a class="nav-link fw-600 px-3 py-2 text-dark" href="{% url 'contact' %}">Contact</a>
                 </li>
             </ul>
 
             <!-- Authentication CTAs -->
             <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
-                <a href="/accounts/templates/accounts/login.html" class="btn btn-secondary-custom border-0 text-dark fw-bold px-4">Sign In</a>
-                <a href="/accounts/templates/accounts/register.html" class="btn btn-primary-custom fw-bold px-4">Post a Job</a>
+                {% if user.is_authenticated %}
+                    <span class="text-muted small d-none d-lg-inline">Hello, <strong>{{ user.first_name|default:user.username }}</strong></span>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary-custom text-dark fw-bold px-4">Dashboard</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger fw-bold px-3">Sign Out</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-secondary-custom text-dark fw-bold px-4">Sign In</a>
+                    <a href="{% url 'register' %}" class="btn btn-primary-custom fw-bold px-4">Sign Up</a>
+                {% endif %}
             </div>
         </div>
     </div>

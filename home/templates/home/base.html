@@ -24,8 +24,21 @@
     <!-- A. Reusable Navbar Component (Server-Side Include) -->
     {% include "home/components/navbar.html" %}
 
+    <!-- Django Messages Framework Alerts -->
+    {% if messages %}
+        <div class="container mt-3 mb-0">
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show border-0 shadow-sm" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <!-- B. Main Content Slots -->
     {% block content %}{% endblock %}
+
 
     <!-- C. Reusable Footer Component (Server-Side Include) -->
     {% include "home/components/footer.html" %}

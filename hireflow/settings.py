@@ -126,3 +126,10 @@ STATIC_URL = 'static/'
 # Custom Authentication User Model
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
+# Authentication Backends
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Default fallback
+    'accounts.backends.EmailBackend',             # Email lookup support
+]
+
+

@@ -31,6 +31,8 @@ urlpatterns = [
     path('accounts/candidate-login/', accounts.views.candidate_login, name='candidate_login'),
     path('accounts/dashboard/', accounts.views.dashboard, name='dashboard'),
     path('accounts/saved-jobs/', accounts.views.saved_jobs, name='saved_jobs'),
+    path('accounts/logout/', accounts.views.logout_view, name='logout'),
+
 
     # 2. Static HTML Path Fallbacks (Ensures template navigation links do not break)
     path('home/templates/home/index.html', home.views.index),

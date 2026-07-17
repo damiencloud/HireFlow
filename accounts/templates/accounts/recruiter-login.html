@@ -66,34 +66,49 @@
                         </div>
 
                         <!-- Standard Form -->
-                        <form action="/jobs/templates/jobs/job-posting.html" method="POST" onsubmit="event.preventDefault(); window.location.href='/jobs/templates/jobs/job-posting.html';">
+                        <form action="{% url 'recruiter_login' %}" method="POST">
+                            {% csrf_token %}
+
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger py-2 px-3 small rounded-3 mb-3">
+                                    {% for error in form.non_field_errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
                             <div class="d-flex flex-column gap-3.5 mb-4">
                                 <!-- Email -->
                                 <div>
-                                    <label class="form-label small fw-bold text-dark mb-1">Corporate Email</label>
-                                    <input type="email" class="form-control px-3 py-2" placeholder="recruiter@company.com" required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
+                                    <label class="form-label small fw-bold text-dark mb-1">Email Address</label>
+                                    {{ form.username }}
+                                    {% if form.username.errors %}
+                                        <div class="text-danger small mt-1">{% for error in form.username.errors %}{{ error }}{% endfor %}</div>
+                                    {% endif %}
                                 </div>
                                 <!-- Password -->
                                 <div>
                                     <div class="d-flex justify-content-between mb-1">
                                         <label class="form-label small fw-bold text-dark mb-0">Password</label>
-                                        <a href="#" class="small text-primary fw-semibold" style="font-size: 0.85rem;">Forgot password?</a>
                                     </div>
-                                    <input type="password" class="form-control px-3 py-2" placeholder="••••••••" required style="border-radius: 0.5rem; border-color: var(--hf-border-color);">
+                                    {{ form.password }}
+                                    {% if form.password.errors %}
+                                        <div class="text-danger small mt-1">{% for error in form.password.errors %}{{ error }}{% endfor %}</div>
+                                    {% endif %}
                                 </div>
                             </div>
 
                             <!-- Submit action -->
-                            <button type="submit" class="btn btn-primary-custom w-100 py-2.5 fw-bold border-0 mb-3" style="background: linear-gradient(135deg, var(--hf-primary), var(--hf-secondary)) !important;">Recruiter Sign In</button>
+                            <button type="submit" class="btn btn-primary-custom w-100 py-2.5 fw-bold border-0 mb-3">Sign In</button>
                         </form>
 
                         <!-- Footer Links -->
                         <div class="text-center">
                             <p class="text-muted small mb-0">
-                                Need to post standard roles? <a href="/home/templates/home/about.html#pricing" class="text-primary fw-bold">View Subscription Plans</a>
+                                Don't have an account? <a href="{% url 'register' %}" class="text-primary fw-bold">Sign up</a>
                             </p>
                             <p class="text-muted small mt-2 mb-0">
-                                Are you a job candidate? <a href="/accounts/templates/accounts/candidate-login.html" class="text-secondary fw-bold">Candidate Sign In</a>
+                                Are you a job seeker? <a href="{% url 'candidate_login' %}" class="text-primary fw-bold">Candidate Sign In</a>
                             </p>
                         </div>
 

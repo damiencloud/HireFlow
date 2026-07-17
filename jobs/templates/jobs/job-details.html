@@ -1,7 +1,7 @@
 {% extends "home/base.html" %}
 
-{% block title %}Senior Software Engineer - Google LLC - HireFlow{% endblock %}
-{% block description %}Apply for the Senior Software Engineer position at Google LLC. Explore salary ranges, key responsibilities, and requirements.{% endblock %}
+{% block title %}{{ job.title }} - {{ job.company.name }} - HireFlow{% endblock %}
+{% block description %}Apply for the {{ job.title }} position at {{ job.company.name }}. Explore salary ranges, key responsibilities, and requirements.{% endblock %}
 
 {% block content %}
     <!-- Job Title Summary Header Banner -->
@@ -10,21 +10,22 @@
             <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
                 <div class="d-flex align-items-center gap-3">
                     <!-- Company Logo Box -->
-                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-4 fw-bold text-primary shadow-sm" style="width: 64px; height: 64px; font-size: 1.6rem; color: #4285f4 !important; background-color: rgba(66, 133, 244, 0.08) !important;">
-                        G
+                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-4 fw-bold text-primary shadow-sm overflow-hidden" style="width: 64px; height: 64px; font-size: 1.6rem; color: var(--hf-primary) !important; background-color: rgba(79, 70, 229, 0.08) !important;">
+                        {% if job.company.logo %}
+                            <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-100 h-100" style="object-fit: cover;">
+                        {% else %}
+                            {{ job.company.name|slice:":1"|upper }}
+                        {% endif %}
                     </div>
                     <div>
-                        <h1 class="h2 fw-800 text-dark mb-1">Senior Software Engineer</h1>
+                        <h1 class="h2 fw-800 text-dark mb-1">{{ job.title }}</h1>
                         <p class="text-muted mb-0 fw-semibold">
-                            Google LLC • <i class="bi bi-geo-alt-fill text-primary" style="color: var(--hf-primary) !important;"></i> Mountain View, CA (Hybrid)
+                            {{ job.company.name }} • <i class="bi bi-geo-alt-fill text-primary" style="color: var(--hf-primary) !important;"></i> {{ job.location }}
                         </p>
                     </div>
                 </div>
                 <!-- Call to Action Buttons -->
                 <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-secondary-custom border px-4 py-2.5" style="border-color: var(--hf-border-color) !important;" data-bs-toggle="tooltip" title="Save Job">
-                        <i class="bi bi-bookmark-fill text-primary" style="color: var(--hf-primary) !important;"></i> Save Role
-                    </button>
                     <!-- Trigger Modal Button -->
                     <button class="btn btn-primary-custom px-4 py-2.5" data-bs-toggle="modal" data-bs-target="#applyModal">
                         Apply Now <i class="bi bi-arrow-right-short ms-1"></i>
@@ -44,46 +45,10 @@
                     
                     <!-- Section 1: Overview Description -->
                     <div>
-                        <h4 class="fw-bold text-dark mb-3">Job Description</h4>
-                        <p class="text-muted" style="line-height: 1.7;">
-                            Google's software engineers develop the next-generation technologies that change how billions of users connect, explore, and interact with information. We are looking for a Senior Software Engineer to join our Core Cloud Platform Team. In this role, you will build and maintain highly distributed infrastructure systems that scale automatically to support our global cloud customers.
-                        </p>
-                    </div>
-
-                    <!-- Section 2: Core Responsibilities -->
-                    <div>
-                        <h4 class="fw-bold text-dark mb-3">Key Responsibilities</h4>
-                        <ul class="text-muted d-flex flex-column gap-2" style="line-height: 1.6; padding-left: 1.25rem;">
-                            <li>Design, develop, and maintain secure, scalable distributed server systems in cloud infrastructure frameworks.</li>
-                            <li>Write clean, tested, and highly optimized code in Go, Python, or Java.</li>
-                            <li>Collaborate closely with product managers and database engineers to deliver new security configurations.</li>
-                            <li>Mentor and guide junior and mid-level software engineering team developers.</li>
-                            <li>Debug production infrastructure bugs and handle deployment pipelines on Kubernetes clusters.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Section 3: Key Requirements -->
-                    <div>
-                        <h4 class="fw-bold text-dark mb-3">Skills & Experience Required</h4>
-                        <ul class="text-muted d-flex flex-column gap-2" style="line-height: 1.6; padding-left: 1.25rem;">
-                            <li>Bachelor's degree in Computer Science, engineering, or equivalent professional work experience.</li>
-                            <li>5+ years of software development experience writing code in Go, Python, C++, or Java.</li>
-                            <li>Strong experience in cloud server systems architecture, API designs, and container structures (Kubernetes/Docker).</li>
-                            <li>Experience working with SQL/NoSQL databases and data pipeline clusters.</li>
-                            <li>Excellent communication skills and leadership mindset.</li>
-                        </ul>
-                    </div>
-
-                    <!-- Section 4: What We Offer -->
-                    <div>
-                        <h4 class="fw-bold text-dark mb-3">What We Offer</h4>
-                        <ul class="text-muted d-flex flex-column gap-2" style="line-height: 1.6; padding-left: 1.25rem;">
-                            <li>Competitive base salary range ($160,000 - $210,000 /yr) + annual performance bonus + stock options.</li>
-                            <li>Premium health, dental, and vision insurance policies.</li>
-                            <li>401(k) retirement matching savings plans.</li>
-                            <li>Flexible work setups (Hybrid - 3 days in office, 2 days remote).</li>
-                            <li>State-of-the-art office setups, on-site cafes, and wellness gyms.</li>
-                        </ul>
+                        <h4 class="fw-bold text-dark mb-3">Job Description & Requirements</h4>
+                        <div class="text-muted" style="line-height: 1.7; white-space: pre-wrap;">
+                            {{ job.description }}
+                        </div>
                     </div>
 
                 </div>
@@ -98,38 +63,35 @@
                     <div class="d-flex flex-column gap-3">
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="text-muted small fw-semibold">Employment Type</span>
-                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 fw-bold" style="color: var(--hf-primary) !important;">Full-Time</span>
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 fw-bold" style="color: var(--hf-primary) !important;">{{ job.get_job_type_display }}</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="text-muted small fw-semibold">Experience Level</span>
-                            <span class="text-dark fw-bold small">Senior (5+ yrs)</span>
+                            <span class="text-dark fw-bold small">{{ job.get_experience_level_display }}</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="text-muted small fw-semibold">Base Salary Range</span>
-                            <span class="text-success fw-bold small">$160k - $210k /yr</span>
+                            <span class="text-success fw-bold small">{{ job.salary|default:"Not specified" }}</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="text-muted small fw-semibold">Posted Date</span>
-                            <span class="text-dark fw-bold small">3 days ago</span>
+                            <span class="text-dark fw-bold small">{{ job.posted_date|timesince }} ago</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="text-muted small fw-semibold">Apply Deadline</span>
-                            <span class="text-danger fw-bold small">Aug 15, 2026</span>
+                            <span class="text-danger fw-bold small">{{ job.deadline|date:"M d, Y"|default:"Open until filled" }}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Card 2: Company Info Card -->
                 <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
-                    <h5 class="fw-bold text-dark mb-3">About Google</h5>
+                    <h5 class="fw-bold text-dark mb-3">About {{ job.company.name }}</h5>
                     <p class="text-muted small mb-4" style="line-height: 1.5;">
-                        Google's mission is to organize the world's information and make it universally accessible and useful. We are a global technology leader focusing on search, cloud computing, and AI tools.
+                        {{ job.company.description|default:"No company profile details registered yet." }}
                     </p>
-                    <div class="d-flex align-items-center gap-2 mb-3 bg-light p-2.5 rounded-3 border" style="font-size: 0.85rem; font-weight: 600; color: #b45309; background-color: #fef3c7 !important; border-color: #fde68a !important;">
-                        <i class="bi bi-star-fill text-warning"></i> 4.9 Rating (8,410 Reviews)
-                    </div>
-                    <a href="/companies/templates/companies/companies.html" class="btn btn-secondary-custom w-100 fw-bold border" style="border-color: var(--hf-border-color) !important; font-size: 0.9rem;">
-                        View Company Profile
+                    <a href="{% url 'companies' %}" class="btn btn-secondary-custom w-100 fw-bold border" style="border-color: var(--hf-border-color) !important; font-size: 0.9rem;">
+                        View All Companies
                     </a>
                 </div>
 

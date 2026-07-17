@@ -44,28 +44,25 @@
 
                 <!-- Collapsible filter content drawer -->
                 <div class="collapse d-lg-block" id="filtersCollapse">
-                    <form action="#" method="GET" class="d-flex flex-column gap-4" onsubmit="event.preventDefault();">
-                        
+                    <form action="{% url 'jobs' %}" method="GET" class="d-flex flex-column gap-4">
+                        <!-- Keep search bar context -->
+                        <input type="hidden" name="q" value="{{ q }}">
+                        <input type="hidden" name="location" value="{{ location }}">
+
                         <!-- Filter Group 1: Job Type -->
                         <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
                             <h6 class="fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 0.95rem;">Job Type</h6>
                             <div class="d-flex flex-column gap-2.5">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="job_type" value="full-time" id="typeFT" checked>
-                                    <label class="form-check-label text-muted small fw-semibold" for="typeFT">Full-Time (8,430)</label>
+                                    <input class="form-check-input" type="radio" name="job_type" value="all" id="type_all" {% if not job_type_filter or job_type_filter == 'all' %}checked{% endif %}>
+                                    <label class="form-check-label text-muted small fw-semibold" for="type_all">All Types</label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="job_type" value="part-time" id="typePT">
-                                    <label class="form-check-label text-muted small fw-semibold" for="typePT">Part-Time (1,240)</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="job_type" value="remote" id="typeRM" checked>
-                                    <label class="form-check-label text-muted small fw-semibold" for="typeRM">Remote Only (3,520)</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="job_type" value="contract" id="typeCT">
-                                    <label class="form-check-label text-muted small fw-semibold" for="typeCT">Contract (890)</label>
-                                </div>
+                                {% for val, label in job_types %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="job_type" value="{{ val }}" id="type_{{ val }}" {% if job_type_filter == val %}checked{% endif %}>
+                                        <label class="form-check-label text-muted small fw-semibold" for="type_{{ val }}">{{ label }}</label>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
 
@@ -74,50 +71,38 @@
                             <h6 class="fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 0.95rem;">Experience Level</h6>
                             <div class="d-flex flex-column gap-2.5">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="experience" value="entry" id="expEntry">
-                                    <label class="form-check-label text-muted small fw-semibold" for="expEntry">Entry Level</label>
+                                    <input class="form-check-input" type="radio" name="experience_level" value="all" id="exp_all" {% if not experience_filter or experience_filter == 'all' %}checked{% endif %}>
+                                    <label class="form-check-label text-muted small fw-semibold" for="exp_all">All Levels</label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="experience" value="mid" id="expMid" checked>
-                                    <label class="form-check-label text-muted small fw-semibold" for="expMid">Mid Level</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="experience" value="senior" id="expSenior" checked>
-                                    <label class="form-check-label text-muted small fw-semibold" for="expSenior">Senior Level</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="experience" value="executive" id="expExec">
-                                    <label class="form-check-label text-muted small fw-semibold" for="expExec">Executive / Director</label>
-                                </div>
+                                {% for val, label in experience_levels %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="experience_level" value="{{ val }}" id="exp_{{ val }}" {% if experience_filter == val %}checked{% endif %}>
+                                        <label class="form-check-label text-muted small fw-semibold" for="exp_{{ val }}">{{ label }}</label>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
 
-                        <!-- Filter Group 3: Salary Range -->
+                        <!-- Filter Group 3: Category -->
                         <div class="card p-4 border-0 shadow-sm rounded-4 bg-white">
-                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 0.95rem;">Salary (Annual)</h6>
+                            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3" style="font-size: 0.95rem;">Category</h6>
                             <div class="d-flex flex-column gap-2.5">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="salary" id="salAny" checked>
-                                    <label class="form-check-label text-muted small fw-semibold" for="salAny">Any Salary</label>
+                                    <input class="form-check-input" type="radio" name="category" value="all" id="cat_all" {% if not category_filter or category_filter == 'all' %}checked{% endif %}>
+                                    <label class="form-check-label text-muted small fw-semibold" for="cat_all">All Categories</label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="salary" id="sal50">
-                                    <label class="form-check-label text-muted small fw-semibold" for="sal50">$50,000 - $100,000</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="salary" id="sal100">
-                                    <label class="form-check-label text-muted small fw-semibold" for="sal100">$100,000 - $150,000</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="salary" id="sal150">
-                                    <label class="form-check-label text-muted small fw-semibold" for="sal150">$150,000+</label>
-                                </div>
+                                {% for val, label in categories %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="category" value="{{ val }}" id="cat_{{ val }}" {% if category_filter == val %}checked{% endif %}>
+                                        <label class="form-check-label text-muted small fw-semibold" for="cat_{{ val }}">{{ label }}</label>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
 
-                        <!-- Reset Buttons -->
+                        <!-- Action Buttons -->
                         <button type="submit" class="btn btn-primary-custom w-100 fw-bold border-0">Apply Filters</button>
-                        <button type="reset" class="btn btn-secondary-custom w-100 fw-bold border" style="border-color: var(--hf-border-color) !important;">Clear Filters</button>
+                        <a href="{% url 'jobs' %}" class="btn btn-secondary-custom w-100 fw-bold border text-center text-dark d-flex align-items-center justify-content-center" style="border-color: var(--hf-border-color) !important; text-decoration: none; height: 38px;">Clear Filters</a>
 
                     </form>
                 </div>
@@ -128,207 +113,68 @@
                 <!-- Sorting & Tally header row -->
                 <div class="d-flex align-items-center justify-content-between mb-4 bg-white p-3 rounded-4 shadow-sm border border-light">
                     <span class="text-muted fw-semibold" style="font-size: 0.95rem;">
-                        Showing <strong class="text-dark">4</strong> active job results
+                        Showing <strong class="text-dark">{{ jobs.count }}</strong> active job result{{ jobs.count|pluralize }}
                     </span>
-                    <div class="d-flex align-items-center gap-2">
-                        <span class="text-muted small fw-bold d-none d-sm-inline-block text-nowrap">Sort by:</span>
-                        <select class="form-select form-select-sm border-0 bg-light fw-semibold" style="box-shadow: none; cursor: pointer; width: auto; font-size: 0.85rem;">
-                            <option value="newest">Newest Posted</option>
-                            <option value="highest">Highest Salary</option>
-                            <option value="popular">Popular Roles</option>
-                        </select>
-                    </div>
                 </div>
 
                 <!-- Vertical Cards Listing Stack -->
                 <div class="d-flex flex-column gap-4">
-                    <!-- Job Listing 1: Google -->
-                    <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-primary" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(79, 70, 229, 0.06) !important; color: #4285f4 !important;">
-                                        G
-                                    </div>
-                                    <div>
-                                        <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">Google LLC</span>
-                                        <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Senior Software Engineer</h5>
-                                    </div>
-                                </div>
-                                <button class="btn p-2 border-0 bg-light rounded-circle text-muted hover-primary d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; transition: var(--hf-transition-fast);" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Job">
-                                    <i class="bi bi-bookmark-fill text-primary" style="font-size: 0.95rem; color: var(--hf-primary) !important;"></i>
-                                </button>
-                            </div>
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
-                                    <i class="bi bi-briefcase me-1"></i> Full-Time
-                                </span>
-                                <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
-                                    <i class="bi bi-geo-alt me-1"></i> Mountain View, CA
-                                </span>
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
-                                    <i class="bi bi-currency-dollar me-1"></i> $160,000 - $210,000 /yr
-                                </span>
-                            </div>
-                            <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
-                                We are looking for a Senior Software Engineer to design, develop, and deploy scalable cloud infrastructure services...
-                            </p>
-                        </div>
-                        <div>
-                            <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
-                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
-                                <div class="d-flex gap-2 flex-wrap">
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Python</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Django</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Docker</span>
-                                </div>
-                                <a href="/jobs/templates/jobs/job-details.html" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
-                                    Apply Now <i class="bi bi-arrow-right-short ms-0.5"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Job Listing 2: Stripe -->
-                    <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-secondary" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(139, 92, 246, 0.06) !important; color: var(--hf-secondary) !important;">
-                                        S
-                                    </div>
-                                    <div>
-                                        <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">Stripe Inc.</span>
-                                        <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Product UX/UI Designer</h5>
+                    {% for job in jobs %}
+                        <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
+                            <div>
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-primary overflow-hidden" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(79, 70, 229, 0.06) !important; color: var(--hf-primary) !important;">
+                                            {% if job.company.logo %}
+                                                <img src="{{ job.company.logo.url }}" alt="{{ job.company.name }}" class="w-100 h-100" style="object-fit: cover;">
+                                            {% else %}
+                                                {{ job.company.name|slice:":1"|upper }}
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">{{ job.company.name }}</span>
+                                            <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">{{ job.title }}</h5>
+                                        </div>
                                     </div>
                                 </div>
-                                <button class="btn p-2 border-0 bg-light rounded-circle text-muted hover-primary d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; transition: var(--hf-transition-fast);" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Job">
-                                    <i class="bi bi-bookmark" style="font-size: 0.95rem;"></i>
-                                </button>
-                            </div>
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
-                                    <i class="bi bi-briefcase me-1"></i> Full-Time
-                                </span>
-                                <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
-                                    <i class="bi bi-geo-alt me-1"></i> Remote (US)
-                                </span>
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
-                                    <i class="bi bi-currency-dollar me-1"></i> $110,000 - $145,000 /yr
-                                </span>
-                            </div>
-                            <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
-                                We are seeking a Product Designer to own Stripe's dashboard billing interface designs and customer flow workflows...
-                            </p>
-                        </div>
-                        <div>
-                            <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
-                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
-                                <div class="d-flex gap-2 flex-wrap">
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Figma</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">UI Design</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">React</span>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
+                                        <i class="bi bi-briefcase me-1"></i> {{ job.get_job_type_display }}
+                                    </span>
+                                    <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                        <i class="bi bi-geo-alt me-1"></i> {{ job.location }}
+                                    </span>
+                                    {% if job.salary %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
+                                            <i class="bi bi-currency-dollar me-1"></i> {{ job.salary }}
+                                        </span>
+                                    {% endif %}
                                 </div>
-                                <a href="/jobs/templates/jobs/job-details.html" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
-                                    Apply Now <i class="bi bi-arrow-right-short ms-0.5"></i>
-                                </a>
+                                <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
+                                    {{ job.description|truncatewords:30 }}
+                                </p>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Job Listing 3: Figma -->
-                    <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-danger" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(242, 78, 30, 0.06) !important; color: #f24e1e !important;">
-                                        F
+                            <div>
+                                <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">{{ job.get_experience_level_display }}</span>
+                                        <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">{{ job.category|capfirst }}</span>
                                     </div>
-                                    <div>
-                                        <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">Figma Inc.</span>
-                                        <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Staff DevOps Engineer</h5>
-                                    </div>
+                                    <a href="{% url 'job_details' job.id %}" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
+                                        View Details <i class="bi bi-arrow-right-short ms-0.5"></i>
+                                    </a>
                                 </div>
-                                <button class="btn p-2 border-0 bg-light rounded-circle text-muted hover-primary d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; transition: var(--hf-transition-fast);" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Job">
-                                    <i class="bi bi-bookmark" style="font-size: 0.95rem;"></i>
-                                </button>
-                            </div>
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
-                                    <i class="bi bi-briefcase me-1"></i> Full-Time
-                                </span>
-                                <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
-                                    <i class="bi bi-geo-alt me-1"></i> San Francisco, CA
-                                </span>
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
-                                    <i class="bi bi-currency-dollar me-1"></i> $180,000 - $230,000 /yr
-                                </span>
-                            </div>
-                            <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
-                                Maintain and scale Figma's core visual canvas rendering pipeline cluster infrastructure on AWS and Kubernetes...
-                            </p>
-                        </div>
-                        <div>
-                            <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
-                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
-                                <div class="d-flex gap-2 flex-wrap">
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Kubernetes</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">AWS</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Go</span>
-                                </div>
-                                <a href="/jobs/templates/jobs/job-details.html" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
-                                    Apply Now <i class="bi bi-arrow-right-short ms-0.5"></i>
-                                </a>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Job Listing 4: Microsoft -->
-                    <div class="card p-4 rounded-4 shadow-sm card-hover border-0 bg-white d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="d-flex align-items-center justify-content-between mb-3">
-                                <div class="d-flex align-items-center gap-3">
-                                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 fw-bold text-info" style="width: 52px; height: 52px; font-size: 1.3rem; background-color: rgba(0, 164, 239, 0.06) !important; color: #00a4ef !important;">
-                                        M
-                                    </div>
-                                    <div>
-                                        <span class="text-muted fw-600" style="font-size: 0.85rem; letter-spacing: 0.05em;">Microsoft Corp.</span>
-                                        <h5 class="card-title fw-bold mb-0 text-dark" style="font-size: 1.1rem; line-height: 1.3;">Data & AI Analyst</h5>
-                                    </div>
-                                </div>
-                                <button class="btn p-2 border-0 bg-light rounded-circle text-muted hover-primary d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px; transition: var(--hf-transition-fast);" data-bs-toggle="tooltip" data-bs-placement="top" title="Save Job">
-                                    <i class="bi bi-bookmark" style="font-size: 0.95rem;"></i>
-                                </button>
-                            </div>
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem; color: var(--hf-primary) !important;">
-                                    <i class="bi bi-briefcase me-1"></i> Full-Time
-                                </span>
-                                <span class="badge bg-light text-muted border rounded-pill px-3 py-1" style="font-size: 0.75rem;">
-                                    <i class="bi bi-geo-alt me-1"></i> Redmond, WA
-                                </span>
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1" style="font-size: 0.75rem;">
-                                    <i class="bi bi-currency-dollar me-1"></i> $125,000 - $160,000 /yr
-                                </span>
-                            </div>
-                            <p class="text-muted mb-4 text-line-clamp-2" style="font-size: 0.925rem; line-height: 1.5;">
-                                Analyze consumer search metrics across the Copilot division using statistical modeling algorithms...
-                            </p>
+                    {% empty %}
+                        <div class="text-center py-5 bg-white rounded-4 shadow-sm border border-light">
+                            <i class="bi bi-search fs-1 text-muted mb-3 d-block"></i>
+                            <h5 class="fw-bold">No jobs matched your search</h5>
+                            <p class="text-muted small">Try adjusting your filters or search keywords.</p>
+                            <a href="{% url 'jobs' %}" class="btn btn-primary-custom mt-2">Clear Filters</a>
                         </div>
-                        <div>
-                            <hr class="my-3" style="border-color: var(--hf-border-color); opacity: 0.8;">
-                            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-1">
-                                <div class="d-flex gap-2 flex-wrap">
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">SQL</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">Python</span>
-                                    <span class="badge bg-light text-dark border px-2.5 py-1" style="font-size: 0.75rem; font-weight: 500;">PowerBI</span>
-                                </div>
-                                <a href="/jobs/templates/jobs/job-details.html" class="btn btn-secondary-custom border px-3 py-1.5 fw-semibold text-primary" style="font-size: 0.85rem; border-color: rgba(79, 70, 229, 0.15) !important;">
-                                    Apply Now <i class="bi bi-arrow-right-short ms-0.5"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
 
                 <!-- Reusable Pagination Component Include -->
