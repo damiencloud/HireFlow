@@ -108,3 +108,101 @@ class UserLoginForm(AuthenticationForm):
         label="Password",
         widget=forms.PasswordInput(attrs={'class': 'form-control px-3 py-2', 'placeholder': '••••••••'})
     )
+
+class UserProfileForm(forms.ModelForm):
+    """
+    Form to edit core user account settings, primarily Full Name.
+    """
+    full_name = forms.CharField(
+        max_length=255,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control px-3 py-2', 'placeholder': 'e.g. John Doe'})
+    )
+
+    class Meta:
+        model = User
+        fields = ['full_name']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields['full_name'].initial = self.instance.get_full_name() or self.instance.username
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        full_name = self.cleaned_data.get('full_name')
+        names = full_name.strip().split(' ', 1)
+        user.first_name = names[0]
+        if len(names) > 1:
+            user.last_name = names[1]
+        else:
+            user.last_name = ""
+        if commit:
+            user.save()
+        return user
+
+class CandidateProfileForm(forms.ModelForm):
+    """
+    Form for Candidates to customize their personal profile information.
+    """
+    class Meta:
+        model = CandidateProfile
+        fields = ['phone_number', 'location', 'bio', 'skills', 'profile_picture', 'resume']
+        widgets = {
+            'phone_number': forms.TextInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'placeholder': 'e.g. +1 (555) 019-2834'
+            }),
+            'location': forms.TextInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'placeholder': 'e.g. San Francisco, CA'
+            }),
+            'bio': forms.Textarea(attrs={
+                'class': 'form-control px-3 py-2',
+                'rows': 4,
+                'placeholder': 'Tell recruiters about yourself, your background, and your aspirations...'
+            }),
+            'skills': forms.TextInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'placeholder': 'e.g. Python, Django, React, Postgres'
+            }),
+            'profile_picture': forms.FileInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'accept': 'image/*',
+            }),
+            'resume': forms.FileInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'accept': '.pdf,.doc,.docx',
+            }),
+        }
+
+class RecruiterProfileForm(forms.ModelForm):
+    """
+    Form for Recruiters to customize their professional profile information.
+    """
+    class Meta:
+        model = RecruiterProfile
+        fields = ['phone_number', 'position', 'company_name', 'bio', 'profile_picture']
+        widgets = {
+            'phone_number': forms.TextInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'placeholder': 'e.g. +1 (555) 019-2834'
+            }),
+            'position': forms.TextInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'placeholder': 'e.g. Senior Tech Recruiter'
+            }),
+            'company_name': forms.TextInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'placeholder': 'e.g. Stripe Inc.'
+            }),
+            'bio': forms.Textarea(attrs={
+                'class': 'form-control px-3 py-2',
+                'rows': 4,
+                'placeholder': 'Tell candidates about your professional focus and organization...'
+            }),
+            'profile_picture': forms.FileInput(attrs={
+                'class': 'form-control px-3 py-2',
+                'accept': 'image/*',
+            }),
+        }

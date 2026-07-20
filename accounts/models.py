@@ -29,6 +29,20 @@ class CandidateProfile(models.Model):
         blank=True,
         help_text="Comma-separated list of key professional skills"
     )
+    phone_number = models.CharField(max_length=20, blank=True, help_text="Contact phone number")
+    location = models.CharField(max_length=255, blank=True, help_text="Current city or location")
+    profile_picture = models.ImageField(
+        upload_to='profile_pics/',
+        blank=True,
+        null=True,
+        help_text="Upload a professional headshot"
+    )
+    resume = models.FileField(
+        upload_to='resumes/',
+        blank=True,
+        null=True,
+        help_text="Upload your resume document"
+    )
 
     def __str__(self):
         return f"{self.user.username}'s Candidate Profile"
@@ -48,6 +62,18 @@ class RecruiterProfile(models.Model):
         help_text="Affiliated organization name"
     )
     bio = models.TextField(blank=True, help_text="Brief professional bio")
+    phone_number = models.CharField(max_length=20, blank=True, help_text="Contact phone number")
+    position = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Current professional role/position"
+    )
+    profile_picture = models.ImageField(
+        upload_to='profile_pics/',
+        blank=True,
+        null=True,
+        help_text="Upload a professional headshot"
+    )
 
     def __str__(self):
         return f"{self.user.username}'s Recruiter Profile"

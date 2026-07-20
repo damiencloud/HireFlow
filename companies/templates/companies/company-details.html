@@ -1,0 +1,129 @@
+{% extends "home/base.html" %}
+
+{% block title %}{{ company.name }} - Company Profile - HireFlow{% endblock %}
+{% block description %}Explore careers at {{ company.name }}. View company overview, location, and active job openings.{% endblock %}
+
+{% block content %}
+    <!-- Header Banner -->
+    <header class="py-5 bg-white border-bottom" style="border-color: var(--hf-border-color) !important;">
+        <div class="container">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
+                <div class="d-flex align-items-center gap-4">
+                    <!-- Company Logo Box -->
+                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-4 fw-bold text-primary shadow-sm overflow-hidden" style="width: 72px; height: 72px; font-size: 1.8rem; color: var(--hf-primary) !important;">
+                        {% if company.logo %}
+                            <img src="{{ company.logo.url }}" alt="{{ company.name }}" class="w-100 h-100" style="object-fit: cover;">
+                        {% else %}
+                            {{ company.name|slice:":1"|upper }}
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h1 class="h2 fw-800 text-dark mb-1">{{ company.name }}</h1>
+                        <p class="text-muted mb-0 fw-semibold">
+                            {% if company.location %}
+                                <i class="bi bi-geo-alt-fill text-primary" style="color: var(--hf-primary) !important;"></i> {{ company.location }}
+                            {% endif %}
+                            {% if company.website %}
+                                <span class="mx-2">•</span>
+                                <a href="{{ company.website }}" target="_blank" class="text-primary text-decoration-none hover-underline">
+                                    <i class="bi bi-globe me-1"></i> Visit Website
+                                </a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 fw-bold" style="font-size: 0.85rem; color: var(--hf-primary) !important;">
+                        <i class="bi bi-briefcase-fill me-1"></i> {{ active_jobs.count }} Active Opening{{ active_jobs.count|pluralize }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 container py-5">
+        <div class="row g-4">
+            
+            <!-- Left Column: Company Overview & Description -->
+            <div class="col-lg-8 col-12">
+                <div class="card p-4 p-md-5 border-0 shadow-sm rounded-4 bg-white mb-4">
+                    <h4 class="fw-bold text-dark mb-3">About {{ company.name }}</h4>
+                    <p class="text-muted mb-0" style="line-height: 1.7; font-size: 1rem;">
+                        {{ company.description|default:"No company overview description registered yet."|linebreaks }}
+                    </p>
+                </div>
+
+                <!-- Active Job Openings List -->
+                <div class="card p-4 p-md-5 border-0 shadow-sm rounded-4 bg-white">
+                    <h4 class="fw-bold text-dark mb-4">Active Open Positions</h4>
+
+                    <div class="d-flex flex-column gap-3">
+                        {% for job in active_jobs %}
+                            <div class="p-4 bg-light rounded-4 border card-hover d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                                <div>
+                                    <h5 class="fw-bold mb-1 text-dark">{{ job.title }}</h5>
+                                    <div class="d-flex flex-wrap gap-2 align-items-center text-muted small">
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2.5 py-1">{{ job.get_job_type_display }}</span>
+                                        <span><i class="bi bi-geo-alt me-1"></i>{{ job.location }}</span>
+                                        {% if job.salary %}
+                                            <span>•</span>
+                                            <span class="text-success fw-semibold">{{ job.salary }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <a href="{% url 'job_details' job.id %}" class="btn btn-primary-custom btn-sm px-4 py-2 fw-semibold">
+                                    View Role <i class="bi bi-arrow-right-short ms-1"></i>
+                                </a>
+                            </div>
+                        {% empty %}
+                            <div class="text-center py-5 text-muted">
+                                <i class="bi bi-journal-x fs-2 mb-2 d-block text-muted"></i>
+                                <p class="mb-0">There are currently no active job vacancies posted by {{ company.name }}.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar: Quick Details -->
+            <div class="col-lg-4 col-12">
+                <div class="card p-4 border-0 shadow-sm rounded-4 bg-white sticky-top" style="top: 100px;">
+                    <h5 class="fw-bold text-dark mb-3">Company Overview</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-3 text-muted small mb-4">
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="bi bi-building text-primary fs-5"></i>
+                            <div>
+                                <strong class="d-block text-dark">Organization Name</strong>
+                                <span>{{ company.name }}</span>
+                            </div>
+                        </li>
+                        {% if company.location %}
+                            <li class="d-flex align-items-center gap-2">
+                                <i class="bi bi-geo-alt text-primary fs-5"></i>
+                                <div>
+                                    <strong class="d-block text-dark">Location</strong>
+                                    <span>{{ company.location }}</span>
+                                </div>
+                            </li>
+                        {% endif %}
+                        {% if company.website %}
+                            <li class="d-flex align-items-center gap-2">
+                                <i class="bi bi-globe text-primary fs-5"></i>
+                                <div>
+                                    <strong class="d-block text-dark">Official Website</strong>
+                                    <a href="{{ company.website }}" target="_blank" class="text-primary text-decoration-none">{{ company.website }}</a>
+                                </div>
+                            </li>
+                        {% endif %}
+                    </ul>
+
+                    <a href="{% url 'companies' %}" class="btn btn-secondary-custom w-100 fw-bold border" style="border-color: var(--hf-border-color) !important;">
+                        <i class="bi bi-arrow-left-short me-1"></i> Back to Companies Directory
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+{% endblock %}

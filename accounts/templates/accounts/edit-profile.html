@@ -1,0 +1,193 @@
+{% extends "home/base.html" %}
+
+{% block title %}Edit Profile - HireFlow{% endblock %}
+{% block description %}Customize your professional profile details, resume files, and location information.{% endblock %}
+
+{% block content %}
+<main class="flex-grow-1 container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-12">
+            
+            <!-- Back to Dashboard Link -->
+            <div class="mb-4">
+                <a href="{% url 'dashboard' %}" class="text-muted hover-underline text-decoration-none small fw-semibold">
+                    <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+                </a>
+            </div>
+
+            <!-- Page Header Card -->
+            <div class="card p-4 border-0 shadow-sm rounded-4 bg-white mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="p-3 rounded-4 bg-primary-subtle text-primary" style="background-color: rgba(79, 70, 229, 0.08) !important; color: var(--hf-primary) !important;">
+                        <i class="bi bi-person-gear fs-3"></i>
+                    </div>
+                    <div>
+                        <h1 class="h3 fw-800 text-dark mb-1">Edit Your Profile</h1>
+                        <p class="text-muted small mb-0">
+                            Update your professional information, contact details, and visibility settings.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Edit Form Card -->
+            <div class="card p-4 p-md-5 border-0 shadow-sm rounded-4 bg-white">
+                <form method="POST" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Global Error Summary -->
+                    {% if user_form.non_field_errors or profile_form.non_field_errors %}
+                        <div class="alert alert-danger border-0 shadow-sm rounded-3 mb-4" role="alert">
+                            <h6 class="fw-bold mb-2">Form Errors:</h6>
+                            <ul class="mb-0 px-3">
+                                {% for error in user_form.non_field_errors %}
+                                    <li class="small">{{ error }}</li>
+                                {% endfor %}
+                                {% for error in profile_form.non_field_errors %}
+                                    <li class="small">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    <!-- Section A: Account Information -->
+                    <h5 class="fw-bold text-dark border-bottom pb-2 mb-4">
+                        <i class="bi bi-person-circle me-1.5 text-primary" style="color: var(--hf-primary) !important;"></i> Account Basics
+                    </h5>
+                    
+                    <div class="mb-4">
+                        <label class="form-label small fw-bold text-dark mb-1.5">Full Name *</label>
+                        {{ user_form.full_name }}
+                        {% if user_form.full_name.errors %}
+                            <div class="text-danger small mt-1.5 fw-semibold">{{ user_form.full_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Section B: Role-Specific Profile Information -->
+                    <h5 class="fw-bold text-dark border-bottom pb-2 mb-4 mt-5">
+                        <i class="bi bi-briefcase-fill me-1.5 text-primary" style="color: var(--hf-primary) !important;"></i> Professional Profile
+                    </h5>
+
+                    <!-- Render profile_form fields -->
+                    <div class="row g-3">
+                        
+                        <!-- Location & Phone (If applicable) -->
+                        <div class="col-md-6 col-12">
+                            <label class="form-label small fw-bold text-dark mb-1.5">Phone Number</label>
+                            {{ profile_form.phone_number }}
+                            {% if profile_form.phone_number.errors %}
+                                <div class="text-danger small mt-1 fw-semibold">{{ profile_form.phone_number.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        {% if request.user.is_candidate %}
+                            <div class="col-md-6 col-12">
+                                <label class="form-label small fw-bold text-dark mb-1.5">Location</label>
+                                {{ profile_form.location }}
+                                {% if profile_form.location.errors %}
+                                    <div class="text-danger small mt-1 fw-semibold">{{ profile_form.location.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <label class="form-label small fw-bold text-dark mb-1.5">Professional Skills</label>
+                                {{ profile_form.skills }}
+                                <span class="text-muted small d-block mt-1.5" style="font-size: 0.75rem;">Comma-separated list (e.g. Python, Django, HTML, CSS).</span>
+                                {% if profile_form.skills.errors %}
+                                    <div class="text-danger small mt-1 fw-semibold">{{ profile_form.skills.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        {% elif request.user.is_recruiter %}
+                            <div class="col-md-6 col-12">
+                                <label class="form-label small fw-bold text-dark mb-1.5">Position / Job Title</label>
+                                {{ profile_form.position }}
+                                {% if profile_form.position.errors %}
+                                    <div class="text-danger small mt-1 fw-semibold">{{ profile_form.position.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 mt-3">
+                                <label class="form-label small fw-bold text-dark mb-1.5">Company Affiliation Name</label>
+                                {{ profile_form.company_name }}
+                                {% if profile_form.company_name.errors %}
+                                    <div class="text-danger small mt-1 fw-semibold">{{ profile_form.company_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        <!-- Bio Text -->
+                        <div class="col-12 mt-3">
+                            <label class="form-label small fw-bold text-dark mb-1.5">Professional Bio</label>
+                            {{ profile_form.bio }}
+                            {% if profile_form.bio.errors %}
+                                <div class="text-danger small mt-1 fw-semibold">{{ profile_form.bio.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Profile Picture Upload -->
+                        <div class="col-12 mt-4">
+                            <label class="form-label small fw-bold text-dark mb-1.5">Profile Photo</label>
+                            
+                            <div class="d-flex align-items-center gap-3 mb-2">
+                                {% if profile.profile_picture %}
+                                    <div class="position-relative overflow-hidden rounded-circle bg-light border shadow-sm" style="width: 80px; height: 80px;">
+                                        <img src="{{ profile.profile_picture.url }}" alt="Profile Photo" class="w-100 h-100" style="object-fit: cover;">
+                                    </div>
+                                {% else %}
+                                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-light text-muted border border-dashed fw-bold shadow-sm" style="width: 80px; height: 80px; font-size: 1.8rem; border-style: dashed !important; border-width: 2px !important;">
+                                        {{ request.user.username|slice:":1"|upper }}
+                                    </div>
+                                {% endif %}
+                                <div class="flex-grow-1">
+                                    {{ profile_form.profile_picture }}
+                                    <span class="text-muted small d-block mt-1" style="font-size: 0.75rem;">Accepted file formats: JPG, PNG, WEBP. Max 2MB.</span>
+                                </div>
+                            </div>
+                            {% if profile_form.profile_picture.errors %}
+                                <div class="text-danger small mt-1 fw-semibold">{{ profile_form.profile_picture.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Resume Upload (Candidate Only) -->
+                        {% if request.user.is_candidate %}
+                            <div class="col-12 mt-4">
+                                <label class="form-label small fw-bold text-dark mb-1.5">Resume / CV Document</label>
+                                
+                                {% if profile.resume %}
+                                    <div class="mb-2 d-flex align-items-center gap-2">
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1.5" style="font-size: 0.8rem;">
+                                            <i class="bi bi-file-earmark-check-fill me-1"></i> Current Resume Uploaded
+                                        </span>
+                                        <a href="{{ profile.resume.url }}" target="_blank" class="btn btn-sm btn-outline-primary px-3 fw-bold py-1">
+                                            <i class="bi bi-cloud-arrow-down-fill me-1"></i> View / Download File
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                
+                                {{ profile_form.resume }}
+                                <span class="text-muted small d-block mt-1" style="font-size: 0.75rem;">Accepted file formats: PDF, DOC, DOCX. Max 5MB.</span>
+                                {% if profile_form.resume.errors %}
+                                    <div class="text-danger small mt-1 fw-semibold">{{ profile_form.resume.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+                    <!-- Submit Actions Button -->
+                    <div class="d-flex align-items-center gap-3 mt-5 border-top pt-4">
+                        <button type="submit" class="btn btn-primary-custom px-5 py-2.5 border-0 fw-bold">
+                            Save Changes <i class="bi bi-check2-circle ms-1"></i>
+                        </button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-secondary-custom px-4 py-2.5 border fw-bold text-dark" style="border-color: var(--hf-border-color) !important;">
+                            Cancel
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</main>
+{% endblock %}

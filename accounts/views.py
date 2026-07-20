@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import UserRegistrationForm, UserLoginForm
+from .forms import UserRegistrationForm, UserLoginForm, UserProfileForm, CandidateProfileForm, RecruiterProfileForm
+from .models import CandidateProfile, RecruiterProfile
 from companies.models import Company
 from jobs.models import Job, JobApplication, SavedJob
 
@@ -70,15 +71,41 @@ def dashboard(request):
     my_jobs = []
     my_applications = []
     received_applications = []
+    completeness = 0
+    checklist = []
     
     if user.is_candidate:
-        profile = getattr(user, 'candidate_profile', None)
+        profile, created = CandidateProfile.objects.get_or_create(user=user)
         my_applications = JobApplication.objects.filter(applicant=user).select_related('job__company')
+        
+        checklist = [
+            {'label': 'Account Created', 'done': True},
+            {'label': 'Phone Number Added', 'done': bool(profile.phone_number)},
+            {'label': 'Location Added', 'done': bool(profile.location)},
+            {'label': 'Skills Configured', 'done': bool(profile.skills)},
+            {'label': 'Bio Written', 'done': bool(profile.bio)},
+            {'label': 'Profile Photo Uploaded', 'done': bool(profile.profile_picture)},
+            {'label': 'Resume CV Uploaded', 'done': bool(profile.resume)},
+        ]
+        done_count = sum(1 for item in checklist if item['done'])
+        completeness = int((done_count / len(checklist)) * 100)
+        
     elif user.is_recruiter:
-        profile = getattr(user, 'recruiter_profile', None)
+        profile, created = RecruiterProfile.objects.get_or_create(user=user)
         my_companies = Company.objects.filter(owner=user)
         my_jobs = Job.objects.filter(company__in=my_companies).select_related('company')
         received_applications = JobApplication.objects.filter(job__company__owner=user).select_related('job', 'applicant')
+        
+        checklist = [
+            {'label': 'Account Created', 'done': True},
+            {'label': 'Phone Number Added', 'done': bool(profile.phone_number)},
+            {'label': 'Bio Written', 'done': bool(profile.bio)},
+            {'label': 'Position Specified', 'done': bool(profile.position)},
+            {'label': 'Company Affiliation Added', 'done': bool(profile.company_name)},
+            {'label': 'Profile Photo Uploaded', 'done': bool(profile.profile_picture)},
+        ]
+        done_count = sum(1 for item in checklist if item['done'])
+        completeness = int((done_count / len(checklist)) * 100)
         
     return render(request, 'accounts/dashboard.html', {
         'profile': profile,
@@ -86,6 +113,8 @@ def dashboard(request):
         'my_jobs': my_jobs,
         'my_applications': my_applications,
         'received_applications': received_applications,
+        'completeness': completeness,
+        'checklist': checklist,
     })
 
 def logout_view(request):
@@ -108,4 +137,43 @@ def saved_jobs(request):
     bookmarks = SavedJob.objects.filter(user=request.user).select_related('job__company')
     return render(request, 'accounts/saved-jobs.html', {
         'saved_jobs': bookmarks
+    })
+
+@login_required
+def edit_profile(request):
+    """
+    Renders and processes profile customizer edits. Handles both Candidate and Recruiter fields.
+    """
+    user = request.user
+    profile = None
+    
+    if user.is_candidate:
+        profile, created = CandidateProfile.objects.get_or_create(user=user)
+        ProfileFormClass = CandidateProfileForm
+    elif user.is_recruiter:
+        profile, created = RecruiterProfile.objects.get_or_create(user=user)
+        ProfileFormClass = RecruiterProfileForm
+    else:
+        messages.error(request, "Your account role does not support profile editing.")
+        return redirect('dashboard')
+        
+    if request.method == 'POST':
+        user_form = UserProfileForm(request.POST, instance=user)
+        profile_form = ProfileFormClass(request.POST, request.FILES, instance=profile)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Your profile has been updated successfully!")
+            return redirect('dashboard')
+        else:
+            messages.error(request, "Please correct the errors in the form below.")
+    else:
+        user_form = UserProfileForm(instance=user)
+        profile_form = ProfileFormClass(instance=profile)
+        
+    return render(request, 'accounts/edit-profile.html', {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'profile': profile,
     })

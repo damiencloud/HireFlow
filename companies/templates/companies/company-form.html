@@ -1,0 +1,124 @@
+{% extends "home/base.html" %}
+
+{% block title %}{% if form.instance.pk %}Edit Company - Recruiter Portal{% else %}Register Company - Recruiter Portal{% endif %} - HireFlow{% endblock %}
+{% block description %}{% if form.instance.pk %}Update your company profile details on HireFlow.{% else %}Register your company profile on HireFlow to publish job openings and hire top talent.{% endif %}{% endblock %}
+
+{% block content %}
+    <!-- Header Banner -->
+    <header class="py-5 bg-white border-bottom" style="border-color: var(--hf-border-color) !important;">
+        <div class="container">
+            <div class="max-width-form mx-auto" style="max-width: 800px;">
+                <span class="badge px-3 py-2 rounded-pill bg-primary-subtle text-primary border border-primary-subtle mb-2 fw-bold" style="color: var(--hf-primary) !important;">
+                    Company Management
+                </span>
+                <h1 class="fw-800 text-dark mb-1">{% if form.instance.pk %}Edit Company Profile{% else %}Register New Company{% endif %}</h1>
+                <p class="text-muted mb-0">{% if form.instance.pk %}Update your organization details and company branding below.{% else %}Create your official company profile to start posting job vacancies on HireFlow.{% endif %}</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Form Section -->
+    <main class="flex-grow-1 container py-5">
+        <div class="max-width-form mx-auto" style="max-width: 800px;">
+            
+            <!-- Core Form Card -->
+            <div class="card p-4 p-md-5 border-0 shadow-sm rounded-4 bg-white">
+                
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger rounded-3">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex flex-column gap-4">
+                        
+                        <!-- Section 1: Organization Identity -->
+                        <div>
+                            <h5 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-building-fill text-primary me-2" style="color: var(--hf-primary) !important;"></i> 1. Organization Identity</h5>
+                            
+                            <div class="row g-3">
+                                <!-- Company Name -->
+                                <div class="col-md-6 col-12">
+                                    <label class="form-label small fw-bold text-dark mb-1">Company Name *</label>
+                                    {{ form.name }}
+                                    {% if form.name.errors %}
+                                        <div class="text-danger small mt-1">{{ form.name.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Headquarters Location -->
+                                <div class="col-md-6 col-12">
+                                    <label class="form-label small fw-bold text-dark mb-1">Headquarters Location</label>
+                                    {{ form.location }}
+                                    {% if form.location.errors %}
+                                        <div class="text-danger small mt-1">{{ form.location.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Website URL -->
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-dark mb-1">Official Website URL</label>
+                                    {{ form.website }}
+                                    {% if form.website.errors %}
+                                        <div class="text-danger small mt-1">{{ form.website.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Branding & Description -->
+                        <div>
+                            <h5 class="fw-bold text-dark border-bottom pb-2 mb-3"><i class="bi bi-card-heading text-primary me-2" style="color: var(--hf-primary) !important;"></i> 2. Branding & Profile</h5>
+                            
+                            <div class="row g-3">
+                                <!-- Logo Upload -->
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-dark mb-1">Company Logo</label>
+                                    {% if form.instance.logo %}
+                                        <div class="d-flex align-items-center gap-3 mb-2 p-2 bg-light rounded-3 border">
+                                            <img src="{{ form.instance.logo.url }}" alt="{{ form.instance.name }}" style="width: 44px; height: 44px; object-fit: cover; border-radius: 8px;">
+                                            <span class="small text-muted">Current Logo Loaded</span>
+                                        </div>
+                                    {% endif %}
+                                    {{ form.logo }}
+                                    {% if form.logo.errors %}
+                                        <div class="text-danger small mt-1">{{ form.logo.errors }}</div>
+                                    {% endif %}
+                                    <span class="text-muted small d-block mt-1" style="font-size: 0.75rem;">Supported formats: PNG, JPG, SVG, WebP.</span>
+                                </div>
+
+                                <!-- Description -->
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold text-dark mb-1">Company Description & Mission</label>
+                                    {{ form.description }}
+                                    {% if form.description.errors %}
+                                        <div class="text-danger small mt-1">{{ form.description.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Submit Buttons -->
+                        <div class="row pt-2 g-3">
+                            <div class="col-12 d-flex gap-3">
+                                <a href="{% url 'dashboard' %}" class="btn btn-secondary-custom px-4 py-2.5 fw-semibold border" style="border-color: var(--hf-border-color) !important;">Cancel</a>
+                                <button type="submit" class="btn btn-primary-custom flex-grow-1 py-2.5 fw-bold border-0">
+                                    {% if form.instance.pk %}Save Changes{% else %}Create Company Profile{% endif %}
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </form>
+                
+            </div>
+            
+        </div>
+    </main>
+{% endblock %}

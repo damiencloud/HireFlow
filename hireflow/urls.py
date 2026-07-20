@@ -29,6 +29,10 @@ urlpatterns = [
     path('jobs/<int:job_id>/apply/', jobs.views.apply_job, name='apply_job'),
     path('applications/<int:application_id>/status/', jobs.views.update_application_status, name='update_application_status'),
     path('companies/', companies.views.companies, name='companies'),
+    path('companies/create/', companies.views.create_company, name='create_company'),
+    path('companies/<int:company_id>/', companies.views.company_details, name='company_details'),
+    path('companies/<int:company_id>/edit/', companies.views.edit_company, name='edit_company'),
+    path('companies/<int:company_id>/delete/', companies.views.delete_company, name='delete_company'),
     
     # Accounts Views
     path('accounts/login/', accounts.views.login, name='login'),
@@ -38,6 +42,7 @@ urlpatterns = [
     path('accounts/dashboard/', accounts.views.dashboard, name='dashboard'),
     path('accounts/saved-jobs/', accounts.views.saved_jobs, name='saved_jobs'),
     path('accounts/logout/', accounts.views.logout_view, name='logout'),
+    path('accounts/profile/edit/', accounts.views.edit_profile, name='edit_profile'),
 
 
     # 2. Static HTML Path Fallbacks (Ensures template navigation links do not break)
@@ -54,6 +59,7 @@ urlpatterns = [
     path('accounts/templates/accounts/candidate-login.html', accounts.views.candidate_login),
     path('accounts/templates/accounts/dashboard.html', accounts.views.dashboard),
     path('accounts/templates/accounts/saved-jobs.html', accounts.views.saved_jobs),
+    path('accounts/templates/accounts/edit-profile.html', accounts.views.edit_profile),
 
     # 3. Dynamic Static Resource serving fallback (For local app/static pathing support)
     path('<str:app_name>/static/<path:path>', serve, {'document_root': settings.BASE_DIR}),
