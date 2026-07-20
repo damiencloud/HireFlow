@@ -16,5 +16,7 @@ env/
 .DS_Store
 Thumbs.db
 
-# Uploaded Media
+# Static & Uploaded Media
+staticfiles/
 media/
+

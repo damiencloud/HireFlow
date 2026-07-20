@@ -11,6 +11,9 @@ import companies.views
 import accounts.views
 import contact.views
 
+def serve_app_static(request, app_name, path):
+    return serve(request, f"{app_name}/static/{path}", document_root=settings.BASE_DIR)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     
@@ -62,7 +65,7 @@ urlpatterns = [
     path('accounts/templates/accounts/edit-profile.html', accounts.views.edit_profile),
 
     # 3. Dynamic Static Resource serving fallback (For local app/static pathing support)
-    path('<str:app_name>/static/<path:path>', serve, {'document_root': settings.BASE_DIR}),
+    path('<str:app_name>/static/<path:path>', serve_app_static),
 ]
 
 from django.conf.urls.static import static
