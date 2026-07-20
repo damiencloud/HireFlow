@@ -18,7 +18,7 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request, user)
+            auth_login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, f"Welcome to HireFlow, {user.first_name}!")
             return redirect('dashboard')
         else:
